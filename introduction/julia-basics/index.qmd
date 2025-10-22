@@ -1,0 +1,100 @@
+---
+title: "Introduction to the Julia language"
+subtitle: "Julia tutorial @ SC25"
+author:
+  - name: "Mosè Giordano"
+    affiliation: "UCL"
+format:
+  revealjs:
+    code-copy: true
+    code-line-numbers: false
+    hash-type: number
+    history: false
+    link-external-icon: true
+    menu:
+      hideMissingTitles: true
+      useTextContentForMissingTitles: false
+    preview-links: true
+    slide-number: true
+    theme: [solarized, custom.scss]
+    transition: fade
+date: 2025-11-17
+engine: julia
+julia:
+    exeflags: ["--threads=auto"]
+---
+
+# Introduction
+
+## Introspection
+
+## LLVM intermediate representation{.scrollable}
+
+```{julia}
+#| echo: true
+
+add(x, y) = x + y
+
+@code_llvm add(1, 2)
+```
+
+```{julia}
+#| echo: true
+
+@code_llvm add(1.0, 2.0)
+```
+
+## Native code{.scrollable}
+
+```{julia}
+#| echo: true
+
+@code_native add(1, 2)
+```
+
+```{julia}
+#| echo: true
+
+@code_native add(1.0, 2.0)
+```
+
+## Multi-threading{.scrollable}
+
+<!-- TODO: improve -->
+
+```{julia}
+#| echo: true
+Threads.nthreads()
+```
+
+```{julia}
+#| echo: true
+
+function axpy!(y, a, x)
+	for idx in eachindex(x, y)
+		y[idx] = muladd(a, x[idx], y[idx])
+	end
+	return y
+end
+
+using BenchmarkTools
+@btime axpy!(y, a, x) setup=(N = 2 ^ 20; a = randn(); x = randn(N); y = randn(N)) evals=1;
+```
+
+```{julia}
+#| echo: true
+
+function axpy_threads!(y, a, x)
+	Threads.@threads for idx in eachindex(x, y)
+		y[idx] = muladd(a, x[idx], y[idx])
+	end
+	return y
+end
+
+@btime axpy_threads!(y, a, x) setup=(N = 2 ^ 20; a = randn(); x = randn(N); y = randn(N)) evals=1;
+```
+
+<!-- Local Variables: -->
+<!-- mode: markdown -->
+<!-- auto-fill-function: nil -->
+<!-- End: -->
