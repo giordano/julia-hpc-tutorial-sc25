@@ -26,6 +26,111 @@ julia:
 
 # Introduction
 
+## Defining and calling functions
+
+Short form for one-line functions:
+
+```{julia}
+#| echo: true
+add(x, y) = x + y
+
+add(1, 2)
+```
+
+```{julia}
+#| echo: true
+add(1.0, 2.0)
+```
+
+## Defining and calling functions (cont.){.scrollable}
+
+Long form for more complex functions:
+
+```{julia}
+#| echo: true
+function axpy!(y, a, x)
+    for idx in eachindex(x, y)
+        y[idx] = muladd(a, x[idx], y[idx])
+    end
+    return y
+end
+
+y = zeros(Float32, 2)
+a = 3.14f0
+x = [1f0, 2f0]
+
+axpy!(y, a, x)
+```
+
+# Multiple dispatch
+
+## In a nutshell{.scrollable}
+
+```{julia}
+#| echo: true
+myfun(a::Integer, b::Integer) = a - b
+myfun(a::AbstractFloat, b::AbstractFloat) = a / b
+
+myfun(1, 2)
+```
+
+```{julia}
+#| echo: true
+myfun(1.0, 2.0)
+```
+
+```julia
+julia> myfun(1, 2.0)
+ERROR: MethodError: no method matching myfun(::Int64, ::Float64)
+The function `myfun` exists, but no method is defined for this combination of argument types.
+
+Closest candidates are:
+  myfun(::AbstractFloat, ::AbstractFloat)
+   @ Main REPL[2]:1
+  myfun(::Integer, ::Integer)
+   @ Main REPL[1]:1
+
+Stacktrace:
+ [1] top-level scope
+   @ REPL[3]:1
+```
+
+## Rock, paper, scissors
+
+```{julia}
+#| echo: true
+abstract type Shape end
+struct Rock     <: Shape end
+struct Paper    <: Shape end
+struct Scissors <: Shape end
+play(::Paper,   ::Rock)     = "Paper wins"
+play(::Paper,   ::Scissors) = "Scissors wins"
+play(::Rock,    ::Scissors) = "Rock wins"
+play(::T,       ::T) where {T<: Shape} = "Tie, try again"
+play(a::Shape, b::Shape) = play(b, a) # Commutativity
+
+
+play(Paper(), Scissors())
+```
+
+```{julia}
+#| echo: true
+play(Rock(), Rock())
+```
+
+```{julia}
+#| echo: true
+play(Rock(), Paper())
+```
+
+# Arrays and Linear Algebra
+
+## Arrays
+
+## Linear Algebra
+
+## Broadcasting
+
 # Benchmarking and profiling
 
 ## The `@time` macro
@@ -59,16 +164,127 @@ using BenchmarkTools
 
 ## Profiling Julia code{.scrollable}
 
-```{julia}
-#| echo: true
-using Profile
-N = 4_000; A = randn(N, N); B = randn(N, N); C = randn(N, N);
-Profile.clear()
-Profile.@profile mul!(C, A, B);
-Profile.print(; C=true)
+```julia
+julia> using Profile, LinearAlgebra
+
+julia> N = 4_000; A = randn(N, N); B = randn(N, N); C = randn(N, N);
+
+julia> Profile.clear()
+
+julia> Profile.@profile mul!(C, A, B);
+
+julia> Profile.print()
+Overhead ╎ [+additional indent] Count File:Line  Function
+=========================================================
+   ╎6    @Base/client.jl:561  _start()
+   ╎ 6    @Base/client.jl:586  repl_main
+   ╎  6    @Base/client.jl:499  run_main_repl(interactive::Bool, quiet::Bool, banner::Symbol, history_file::Bool)
+   ╎   6    @Base/client.jl:478  run_std_repl(REPL::Module, quiet::Bool, banner::Symbol, history_file::Bool)
+   ╎    6    @REPL/src/REPL.jl:639  run_repl
+   ╎     6    @REPL/src/REPL.jl:653  #run_repl#50
+   ╎    ╎ 6    @REPL/src/REPL.jl:424  start_repl_backend
+   ╎    ╎  6    @REPL/src/REPL.jl:427  #start_repl_backend#41
+   ╎    ╎   6    @REPL/src/REPL.jl:452  repl_backend_loop
+   ╎    ╎    6    @REPL/src/REPL.jl:330  eval_user_input
+   ╎    ╎     6    @REPL/src/REPL.jl:305  toplevel_eval_with_hooks
+   ╎    ╎    ╎ 6    @REPL/src/REPL.jl:312  toplevel_eval_with_hooks
+   ╎    ╎    ╎  6    @REPL/src/REPL.jl:312  toplevel_eval_with_hooks
+   ╎    ╎    ╎   6    @REPL/src/REPL.jl:308  toplevel_eval_with_hooks
+  1╎    ╎    ╎    6    @REPL/src/REPL.jl:301  __repl_entry_eval_expanded_with_loc
+   ╎    ╎    ╎     5    @LinearAlgebra/src/matmul.jl:265  mul!(C::Matrix{Float64}, A::Matrix{Float64}, B::Matrix{Float64})
+   ╎    ╎    ╎    ╎ 5    @LinearAlgebra/src/matmul.jl:297  mul!
+   ╎    ╎    ╎    ╎  5    @LinearAlgebra/src/matmul.jl:328  _mul!
+   ╎    ╎    ╎    ╎   5    @LinearAlgebra/src/matmul.jl:507  generic_matmatmul_wrapper!(C::Matrix{Float64}, tA::Char, tB::Char, A::Matrix{Float64}, B::Matrix{Float64}, α::Bool, β::Bool, val::Val{LinearAlgebra.BlasFlag.GEMM})
+   ╎    ╎    ╎    ╎    5    @LinearAlgebra/src/matmul.jl:527  _syrk_herk_gemm_wrapper!
+   ╎    ╎    ╎    ╎     5    @LinearAlgebra/src/matmul.jl:808  gemm_wrapper!
+  4╎    ╎    ╎    ╎    ╎ 5    @LinearAlgebra/src/blas.jl:1648  gemm!(transA::Char, transB::Char, alpha::Float64, A::Matrix{Float64}, B::Matrix{Float64}, beta::Float64, C::Matrix{Float64})
+   ╎591  @Base/task.jl:839  task_done_hook(t::Task)
+   ╎ 591  @Base/task.jl:1199  wait()
+591╎  591  @Base/task.jl:1187  poptask(W::Base.IntrusiveLinkedListSynchronized{Task})
+Total snapshots: 1182. Utilization: 50% across all threads and tasks. Use the `groupby` kwarg to break down by thread and/or task.
 ```
 
 ## Profiling Julia code (cont.){.scrollable}
+
+```julia
+julia> Profile.print(; C=true)
+Overhead ╎ [+additional indent] Count File:Line  Function
+=========================================================
+   ╎591  @juliasrc/task.c:1260  start_task
+   ╎ 591  @juliasrc/task.c:345  jl_finish_task
+   ╎  591  @juliasrc/julia.h:2391  jl_apply
+   ╎   591  @julialib/julia/sys.so:?  jfptr_task_done_hook_36828.1
+   ╎    591  @Base/task.jl:839  task_done_hook(t::Task)
+   ╎     591  @Base/task.jl:1199  wait()
+   ╎    ╎ 591  @Base/task.jl:1187  poptask(W::Base.IntrusiveLinkedListSynchronized{Task})
+   ╎    ╎  591  @juliasrc/scheduler.c:523  ijl_task_get_next
+   ╎    ╎   591  /workspace/srcdir/libuv/src/unix/thread.c:822  uv_cond_wait
+   ╎    ╎    591  /lib/x86_64-linux-gnu/libc.so.6:?  pthread_cond_wait
+   ╎    ╎     591  /lib/x86_64-linux-gnu/libc.so.6:?
+   ╎    ╎    ╎ 591  /lib/x86_64-linux-gnu/libc.so.6:?
+591╎    ╎    ╎  591  /lib/x86_64-linux-gnu/libc.so.6:?
+585╎585  @julialib/julia/libopenblas64_.so:?  dgemm_kernel_HASWELL
+   ╎6    /workspace/srcdir/glibc-2.17/csu/../sysdeps/x86_64/start.S:123
+   ╎ 6    /lib/x86_64-linux-gnu/libc.so.6:?  __libc_start_main
+   ╎  6    /lib/x86_64-linux-gnu/libc.so.6:?
+   ╎   6    /cache/build/tester-amdci4-14/julialang/julia-release-1-dot-12/cli/loader_exe.c:58  main
+   ╎    6    @juliasrc/jlapi.c:1139  jl_repl_entrypoint
+   ╎     6    @juliasrc/jlapi.c:971  true_main
+   ╎    ╎ 6    @juliasrc/julia.h:2391  jl_apply
+   ╎    ╎  6    @julialib/julia/sys.so:?  jfptr__start_31204.1
+   ╎    ╎   6    @Base/client.jl:561  _start()
+   ╎    ╎    6    @Base/client.jl:586  repl_main
+   ╎    ╎     6    @Base/client.jl:499  run_main_repl(interactive::Bool, quiet::Bool, banner::Symbol, history_file::Bool)
+   ╎    ╎    ╎ 6    @juliasrc/builtins.c:881  jl_f_invokelatest
+   ╎    ╎    ╎  6    @juliasrc/julia.h:2391  jl_apply
+   ╎    ╎    ╎   6    @julialib/julia/sys.so:?  jfptr_run_std_repl_62877.1
+   ╎    ╎    ╎    6    @Base/client.jl:478  run_std_repl(REPL::Module, quiet::Bool, banner::Symbol, history_file::Bool)
+   ╎    ╎    ╎     6    …up/julia-1.12.1+0.x64.linux.gnu/share/julia/compiled/v1.12/REPL/u0gqU_UDl4g.so:?  jfptr_run_repl_18594.1
+   ╎    ╎    ╎    ╎ 6    @REPL/src/REPL.jl:639  run_repl
+   ╎    ╎    ╎    ╎  6    @REPL/src/REPL.jl:653  #run_repl#50
+   ╎    ╎    ╎    ╎   6    @REPL/src/REPL.jl:424  start_repl_backend
+   ╎    ╎    ╎    ╎    6    @REPL/src/REPL.jl:427  #start_repl_backend#41
+   ╎    ╎    ╎    ╎     6    @REPL/src/REPL.jl:452  repl_backend_loop
+   ╎    ╎    ╎    ╎    ╎ 6    @REPL/src/REPL.jl:330  eval_user_input
+   ╎    ╎    ╎    ╎    ╎  6    @REPL/src/REPL.jl:305  toplevel_eval_with_hooks
+   ╎    ╎    ╎    ╎    ╎   6    @REPL/src/REPL.jl:312  toplevel_eval_with_hooks
+   ╎    ╎    ╎    ╎    ╎    6    @REPL/src/REPL.jl:312  toplevel_eval_with_hooks
+   ╎    ╎    ╎    ╎    ╎     6    @REPL/src/REPL.jl:308  toplevel_eval_with_hooks
+   ╎    ╎    ╎    ╎    ╎    ╎ 6    @juliasrc/builtins.c:881  jl_f_invokelatest
+   ╎    ╎    ╎    ╎    ╎    ╎  6    @juliasrc/julia.h:2391  jl_apply
+   ╎    ╎    ╎    ╎    ╎    ╎   6    @REPL/src/REPL.jl:301  __repl_entry_eval_expanded_with_loc
+   ╎    ╎    ╎    ╎    ╎    ╎    6    @juliasrc/toplevel.c:1035  jl_toplevel_eval_flex
+   ╎    ╎    ╎    ╎    ╎    ╎     6    @juliasrc/interpreter.c:898  jl_interpret_toplevel_thunk
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎ 5    @juliasrc/interpreter.c:558  eval_body
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎  5    @juliasrc/interpreter.c:581  eval_body
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎   5    @juliasrc/interpreter.c:243  eval_value
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎    5    @juliasrc/interpreter.c:123  do_call
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎     5    @juliasrc/julia.h:2391  jl_apply
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎ 5    @LinearAlgebra/src/matmul.jl:265  mul!(C::Matrix{Float64}, A::Matrix{Float64}, B::Matrix{Float64})
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎  5    @LinearAlgebra/src/matmul.jl:297  mul!
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎   5    @LinearAlgebra/src/matmul.jl:328  _mul!
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    5    @LinearAlgebra/src/matmul.jl:507  generic_matmatmul_wrapper!(C::Matrix{Float64}, tA::Char, tB::Char, A::Matrix{Float64}, B::Matrix{Float64}, α::Bool, β::Bool, val::Val{LinearAlgebra.BlasF…
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎     5    @LinearAlgebra/src/matmul.jl:527  _syrk_herk_gemm_wrapper!
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎ 5    @LinearAlgebra/src/matmul.jl:808  gemm_wrapper!
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎  5    @LinearAlgebra/src/blas.jl:1648  gemm!(transA::Char, transB::Char, alpha::Float64, A::Matrix{Float64}, B::Matrix{Float64}, beta::Float64, C::Matrix{Float64})
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎   5    @julialib/julia/libopenblas64_.so:?  dgemm_64_
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    5    @julialib/julia/libopenblas64_.so:?  dgemm_thread_nn
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎     5    @julialib/julia/libopenblas64_.so:?  gemm_driver.isra.0
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎ 5    @julialib/julia/libopenblas64_.so:?  exec_blas
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎  5    @julialib/julia/libopenblas64_.so:?  inner_thread
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎   1    @julialib/julia/libopenblas64_.so:?  dgemm_beta_HASWELL
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    1    @julialib/julia/libopenblas64_.so:?
+  3╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎   3    @julialib/julia/libopenblas64_.so:?  dgemm_itcopy_HASWELL
+  1╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎   1    @julialib/julia/libopenblas64_.so:?  dgemm_oncopy_HASWELL
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎ 1    @juliasrc/interpreter.c:707  eval_body
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎  1    @juliasrc/interpreter.c:194  eval_stmt_value
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎   1    @juliasrc/interpreter.c:243  eval_value
+   ╎    ╎    ╎    ╎    ╎    ╎    ╎    1    @juliasrc/interpreter.c:122  do_call
+  1╎    ╎    ╎    ╎    ╎    ╎    ╎     1    @juliasrc/interpreter.c:201  eval_value
+Total snapshots: 1182. Utilization: 50% across all threads and tasks. Use the `groupby` kwarg to break down by thread and/or task.
+```
+
+## Using external profilers{.scrollable}
 
 Julia is also compatible with third-party profilers:
 
@@ -76,7 +292,7 @@ Julia is also compatible with third-party profilers:
 * [Intel VTune](https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler-download.html) (on x86-64), also for MPI programs, [`IntelITT.jl`](https://github.com/JuliaPerf/IntelITT.jl) for instrumentation
 * [NVIDIA Nsight Systems](https://developer.nvidia.com/nsight-systems/) (on x86-64 and aarch64), also for MPI and GPU programs, [`NVTX.jl`](https://github.com/JuliaGPU/NVTX.jl) for instrumentation
 * [Tracy](https://github.com/wolfpld/tracy)
-
+* Other profilers that have been used: [`LIKWID.jl`](https://github.com/JuliaPerf/LIKWID.jl), [`Extrae.jl`](https://github.com/bsc-quantic/Extrae.jl), [`ScoreP.jl`](https://github.com/JuliaPerf/ScoreP.jl), and more
 
 # Performance tuning and introspection
 
@@ -84,15 +300,11 @@ Julia is also compatible with third-party profilers:
 
 ```{julia}
 #| echo: true
-
-add(x, y) = x + y
-
 @code_llvm add(1, 2)
 ```
 
 ```{julia}
 #| echo: true
-
 @code_llvm add(1.0, 2.0)
 ```
 
@@ -100,13 +312,6 @@ add(x, y) = x + y
 
 ```{julia}
 #| echo: true
-function axpy!(y, a, x)
-    for idx in eachindex(x, y)
-        y[idx] = muladd(a, x[idx], y[idx])
-    end
-    return y
-end
-
 code_llvm(axpy!, (Vector{Float32}, Float32, Vector{Float32}); debuginfo=:none)
 ```
 
@@ -156,14 +361,6 @@ Threads.nthreads()
 
 ```{julia}
 #| echo: true
-
-function axpy!(y, a, x)
-	for idx in eachindex(x, y)
-		y[idx] = muladd(a, x[idx], y[idx])
-	end
-	return y
-end
-
 @btime axpy!(y, a, x) setup=(N = 2 ^ 20; a = randn(); x = randn(N); y = randn(N)) evals=1;
 ```
 
@@ -179,6 +376,25 @@ end
 
 @btime axpy_threads!(y, a, x) setup=(N = 2 ^ 20; a = randn(); x = randn(N); y = randn(N)) evals=1;
 ```
+
+# Good practices
+
+## Testing
+
+## Packaging
+
+# Conclusions
+
+## Further resources{.scrollable}
+
+* [Official website](https://julialang.org/)
+* [The Manual](https://docs.julialang.org)
+* [YouTube channel](https://www.youtube.com/@TheJuliaLanguage) (all JuliaCon talks, Computational Thinking course, and more)
+* Engage with the [community](https://julialang.org/community/)
+  * [Zulip](https://julialang.zulipchat.com/register/)
+  * [Slack](https://julialang.org/slack/)
+  * Ask for help on the [Discourse web forum](https://discourse.julialang.org/)
+  * [Fortnightly HPC call](https://julialang.org/community/#events) at different times (Europe and Americas)
 
 <!-- Local Variables: -->
 <!-- mode: markdown -->
