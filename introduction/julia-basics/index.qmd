@@ -26,9 +26,61 @@ julia:
 
 # Introduction
 
-## Introspection
+# Benchmarking and profiling
 
-## LLVM intermediate representation{.scrollable}
+## The `@time` macro
+
+Julia comes with a simple macro `@time` for measuring elapsed time of sufficiently long-running functions:
+
+```{julia}
+#| echo: true
+@time sleep(0.1)
+```
+
+This may not provide useful information for very quick functions (resolution is of the order of ~millisecond):
+
+```{julia}
+#| echo: true
+using LinearAlgebra
+A = randn(100)
+norm(A) # warm up
+@time norm(A)
+```
+
+## The `BenchmarkTools.jl` package
+
+For more accurate timing of functions, packages like [`BenchmarkTools.jl`](https://github.com/JuliaCI/BenchmarkTools.jl) and [`ChairMarks.jl`](https://github.com/LilithHafner/Chairmarks.jl) provide more advanced tools:
+
+```{julia}
+#| echo: true
+using BenchmarkTools
+@benchmark norm(A) setup=(A = randn(100))
+```
+
+## Profiling Julia code{.scrollable}
+
+```{julia}
+#| echo: true
+using Profile
+N = 4_000; A = randn(N, N); B = randn(N, N); C = randn(N, N);
+Profile.clear()
+Profile.@profile mul!(C, A, B);
+Profile.print(; C=true)
+```
+
+## Profiling Julia code (cont.){.scrollable}
+
+Julia is also compatible with third-party profilers:
+
+* Linux perf, also via [`LinuxPerf.jl`](https://github.com/JuliaPerf/LinuxPerf.jl)
+* [Intel VTune](https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler-download.html) (on x86-64), also for MPI programs, [`IntelITT.jl`](https://github.com/JuliaPerf/IntelITT.jl) for instrumentation
+* [NVIDIA Nsight Systems](https://developer.nvidia.com/nsight-systems/) (on x86-64 and aarch64), also for MPI and GPU programs, [`NVTX.jl`](https://github.com/JuliaGPU/NVTX.jl) for instrumentation
+* [Tracy](https://github.com/wolfpld/tracy)
+
+
+# Performance tuning and introspection
+
+## LLVM IR{.scrollable}
 
 ```{julia}
 #| echo: true
@@ -44,6 +96,20 @@ add(x, y) = x + y
 @code_llvm add(1.0, 2.0)
 ```
 
+## LLVM IR (cont.){.scrollable}
+
+```{julia}
+#| echo: true
+function axpy!(y, a, x)
+    for idx in eachindex(x, y)
+        y[idx] = muladd(a, x[idx], y[idx])
+    end
+    return y
+end
+
+code_llvm(axpy!, (Vector{Float32}, Float32, Vector{Float32}); debuginfo=:none)
+```
+
 ## Native code{.scrollable}
 
 ```{julia}
@@ -57,6 +123,27 @@ add(x, y) = x + y
 
 @code_native add(1.0, 2.0)
 ```
+
+## Native code (cont.){.scrollable}
+
+```{julia}
+#| echo: true
+code_native(axpy!, (Vector{Float32}, Float32, Vector{Float32}); debuginfo=:none)
+```
+
+## Performance tips{.scrollable}
+
+There are some [general advices for improving performance of Julia code](https://docs.julialang.org/en/v1/manual/performance-tips):
+
+* avoid accessing (untyped) global variables: **put code in functions**, don't work in global scope
+* Julia has a garbage collector (GC) for safe automatic memory management, but in some cases it can get in the way of performance: do fully **in-place operations in hot loops** to avoid the GC to kick in and achieve best performance
+* the compiler may not always be able to prove array indexing operations are in bounds: you may want to use [`@inbounds`](https://docs.julialang.org/en/v1/base/base/#Base.@inbounds) to forcibly disable bounds checking (use with caution!).
+  Double check this is actually necessary with [`@code_llvm`](https://docs.julialang.org/en/v1/stdlib/InteractiveUtils/#InteractiveUtils.@code_llvm), and use generic abstracts (like [`eachindex`](https://docs.julialang.org/en/v1/base/arrays/#Base.eachindex)) whenever possible
+* [avoid type-instabilities](https://docs.julialang.org/en/v1/manual/performance-tips/#Write-%22type-stable%22-functions)
+
+# Shared-memory parallelism
+
+## Task-based parallelism
 
 ## Multi-threading{.scrollable}
 
@@ -77,7 +164,6 @@ function axpy!(y, a, x)
 	return y
 end
 
-using BenchmarkTools
 @btime axpy!(y, a, x) setup=(N = 2 ^ 20; a = randn(); x = randn(N); y = randn(N)) evals=1;
 ```
 
