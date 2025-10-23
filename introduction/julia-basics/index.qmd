@@ -338,7 +338,7 @@ code_native(axpy!, (Vector{Float32}, Float32, Vector{Float32}); debuginfo=:none)
 
 ## Performance tips{.scrollable}
 
-There are some [general advices for improving performance of Julia code](https://docs.julialang.org/en/v1/manual/performance-tips):
+[General advices for improving performance of Julia code](https://docs.julialang.org/en/v1/manual/performance-tips):
 
 * avoid accessing (untyped) global variables: **put code in functions**, don't work in global scope
 * Julia has a garbage collector (GC) for safe automatic memory management, but in some cases it can get in the way of performance: do fully **in-place operations in hot loops** to avoid the GC to kick in and achieve best performance
@@ -381,6 +381,20 @@ end
 
 ## Testing
 
+```{julia}
+#| echo: true
+using Test, Random
+
+@testset "My tests" begin
+	@test 0.1 + 0.2 ≈ 0.3
+	@test sin(randn()) ^ 2 ≤ 1
+	# Mark consistently failing tests as broken
+	@test exp(randn()) < 0 broken=true
+	# Skip flaky tests (they aren't run at all)
+	@test rand() < 0.5 skip=true
+end;
+```
+
 ## Packaging
 
 # Conclusions
@@ -389,7 +403,7 @@ end
 
 * [Official website](https://julialang.org/)
 * [The Manual](https://docs.julialang.org)
-* [YouTube channel](https://www.youtube.com/@TheJuliaLanguage) (all JuliaCon talks, Computational Thinking course, and more)
+* [YouTube channel](https://www.youtube.com/@TheJuliaLanguage) (all JuliaCon talks, Computational Thinking course @ MIT, and more)
 * Engage with the [community](https://julialang.org/community/)
   * [Zulip](https://julialang.zulipchat.com/register/)
   * [Slack](https://julialang.org/slack/)
