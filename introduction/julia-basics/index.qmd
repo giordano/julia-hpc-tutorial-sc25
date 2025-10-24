@@ -350,31 +350,59 @@ code_native(axpy!, (Vector{Float32}, Float32, Vector{Float32}); debuginfo=:none)
 
 ## Task-based parallelism
 
-## Multi-threading{.scrollable}
-
-<!-- TODO: improve -->
-
 ```{julia}
 #| echo: true
-Threads.nthreads()
-```
+using Base.Threads
 
-```{julia}
-#| echo: true
-@btime axpy!(y, a, x) setup=(N = 2 ^ 20; a = randn(); x = randn(N); y = randn(N)) evals=1;
-```
-
-```{julia}
-#| echo: true
-
-function axpy_threads!(y, a, x)
-	Threads.@threads for idx in eachindex(x, y)
-		y[idx] = muladd(a, x[idx], y[idx])
-	end
-	return y
+@time t = @spawn begin # `@spawn` returns right away
+    sleep(2)
+    3 + 3
 end
 
-@btime axpy_threads!(y, a, x) setup=(N = 2 ^ 20; a = randn(); x = randn(N); y = randn(N)) evals=1;
+@time fetch(t) # `fetch` waits for the task to finish
+```
+
+## Task-based parallelism (cont.){.scrollable}
+
+```{julia}
+#| echo: true
+using LinearAlgebra, BenchmarkTools, Base.Threads
+
+@show nthreads()
+
+BLAS.set_num_threads(1) # Fix number of BLAS threads
+
+function tmap(fn, itr)
+    # for each i ∈ itr, spawn a task to compute fn(i)
+    tasks = map(i -> @spawn(fn(i)), itr)
+    # fetch and return all the results
+    return fetch.(tasks)
+end
+
+M = [rand(100,100) for i in 1:(8 * nthreads())];
+
+@btime  map(svdvals, $M) samples=10 evals=3;
+@btime tmap(svdvals, $M) samples=10 evals=3;
+```
+
+## Multi-threaded `for` loops{.scrollable}
+
+```{julia}
+#| echo: true
+using ChunkSplitters, Base.Threads, BenchmarkTools
+
+function sum_threads(fn, data; nchunks=nthreads())
+    psums = zeros(eltype(data), nchunks)
+    @threads for (c, elements) in enumerate(chunks(data; n=nchunks))
+        psums[c] = sum(fn, elements)
+    end
+    return sum(psums)
+end
+
+v = randn(20_000_000);
+
+@btime sum(sin, $v);
+@btime sum_threads(sin, $v);
 ```
 
 # Good practices

@@ -1,7 +1,9 @@
 [deps]
 BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+ChunkSplitters = "ae650224-84b6-46f8-82ea-d812ca08434e"
 quarto_jll = "b7163347-bfae-5fd9-aba4-19f139889d78"
 
 [compat]
 BenchmarkTools = "1.6"
+ChunkSplitters = "3.1"
 quarto_jll = "1.8"
