@@ -18,7 +18,7 @@ format:
     slide-number: true
     theme: [solarized, custom.scss]
     transition: fade
-date: 2025-11-17
+date: 2025-11-16
 engine: julia
 julia:
     exeflags: ["--threads=auto"]
