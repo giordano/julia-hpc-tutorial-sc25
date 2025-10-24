@@ -95,6 +95,13 @@ Stacktrace:
    @ REPL[3]:1
 ```
 
+## In a nutshell (cont.){.scrollable}
+
+Type annotations in signatures are only used for dispatch, not performance.
+Multiple dispatch enables composability:
+
+[![](composability.png)](https://www.youtube.com/watch?v=OfMP5PTFQk0)
+
 ## Rock, paper, scissors
 
 ```{julia}
@@ -130,6 +137,24 @@ play(Rock(), Paper())
 ## Linear Algebra
 
 ## Broadcasting
+
+`for` loops are fast, but for convenience you can use broadcasting, which enables **syntactic loop fusion**:
+
+```{julia}
+#| echo: true
+f(x) = 3 * sin(x) * cos(x) - 5 * exp(-x) + 2
+
+X = [1.0 2.0; 3.0 4.0];
+X .= f.(2 .* X.^2 .+ 6 .* X.^3 .- sqrt.(X))
+```
+
+```{julia}
+#| echo: true
+a = [1.0, 2.0];
+b = [3.0, 4.0];
+
+a .* b'
+```
 
 # Benchmarking and profiling
 
@@ -427,7 +452,7 @@ end;
 
 # Conclusions
 
-## Further resources{.scrollable}
+## Further resources
 
 * [Official website](https://julialang.org/)
 * [The Manual](https://docs.julialang.org)
@@ -436,7 +461,7 @@ end;
   * [Zulip](https://julialang.zulipchat.com/register/)
   * [Slack](https://julialang.org/slack/)
   * Ask for help on the [Discourse web forum](https://discourse.julialang.org/)
-  * [Fortnightly HPC call](https://julialang.org/community/#events) at different times (Europe and Americas)
+  * [Fortnightly HPC call](https://julialang.org/community/#events) at different times
 
 <!-- Local Variables: -->
 <!-- mode: markdown -->
