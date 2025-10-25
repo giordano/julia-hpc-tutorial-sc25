@@ -331,34 +331,95 @@ Mosè Giordano
 </section></section>
 <section>
 <section class="title-slide slide level1 center">
-<h1>Arrays and Linear Algebra</h1>
+<h1>Arrays and <br> Linear Algebra</h1>
 
 </section>
 <section class="slide level2">
 <h2>Arrays</h2>
+<p>Julia has built-in support for multi-dimensional tensors:</p>
+<div id="18" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> [<span class="fl">1.0</span>, <span class="fl">2.0</span>, <span class="fl">3.0</span>, <span class="fl">4.0</span>];</span>
+<span id="cb18-2"><a href="" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> [<span class="fl">5.0</span>, <span class="fl">6.0</span>, <span class="fl">7.0</span>, <span class="fl">8.0</span>];</span>
+<span id="cb18-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="" aria-hidden="true" tabindex="-1"></a>(x <span class="op">+</span> y)<span class="ch">'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>1×4 adjoint(::Vector{Float64}) with eltype Float64:
+ 6.0  8.0  10.0  12.0</code></pre>
+</div>
+</div>
+<div id="20" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a>x[<span class="fl">4</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>4.0</code></pre>
+</div>
+</div>
+<div id="22" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a>y[<span class="fl">2</span><span class="op">:</span><span class="fl">3</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>2-element Vector{Float64}:
+ 6.0
+ 7.0</code></pre>
+</div>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Performance note</strong></p>
+</div>
+<div class="callout-content">
+<p>Slicing makes a copy!</p>
+</div>
+</div>
+</div>
 </section>
 <section class="slide level2">
 <h2>Linear Algebra</h2>
+<p>The <a href="https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/"><code>LinearAlgebra</code></a> stdlib exposes BLAS functionalities with a simple interface:</p>
+<div id="24" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span></span>
+<span id="cb24-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> [<span class="fl">1.0</span> <span class="fl">2.0</span>; <span class="fl">3.0</span> <span class="fl">4.0</span>]; B <span class="op">=</span> [<span class="fl">5.0</span> <span class="fl">6.0</span>; <span class="fl">7.0</span> <span class="fl">8.0</span>];</span>
+<span id="cb24-4"><a href="" aria-hidden="true" tabindex="-1"></a>A <span class="op">*</span> B</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>2×2 Matrix{Float64}:
+ 19.0  22.0
+ 43.0  50.0</code></pre>
+</div>
+</div>
+<div id="26" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb26-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">qr</span>(B)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>LinearAlgebra.QRCompactWY{Float64, Matrix{Float64}, Matrix{Float64}}
+Q factor: 2×2 LinearAlgebra.QRCompactWYQ{Float64, Matrix{Float64}, Matrix{Float64}}
+R factor:
+2×2 Matrix{Float64}:
+ -8.60233  -9.9973
+  0.0      -0.232495</code></pre>
+</div>
+</div>
 </section>
 <section class="slide level2">
 <h2>Broadcasting</h2>
 <p><code>for</code> loops are fast, but for convenience you can use broadcasting, which enables <strong>syntactic loop fusion</strong>:</p>
-<div id="18" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">f</span>(x) <span class="op">=</span> <span class="fl">3</span> <span class="op">*</span> <span class="fu">sin</span>(x) <span class="op">*</span> <span class="fu">cos</span>(x) <span class="op">-</span> <span class="fl">5</span> <span class="op">*</span> <span class="fu">exp</span>(<span class="op">-</span>x) <span class="op">+</span> <span class="fl">2</span></span>
-<span id="cb18-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> [<span class="fl">1.0</span> <span class="fl">2.0</span>; <span class="fl">3.0</span> <span class="fl">4.0</span>];</span>
-<span id="cb18-4"><a href="" aria-hidden="true" tabindex="-1"></a>X <span class="op">.=</span> <span class="fu">f</span>.(<span class="fl">2</span> <span class="op">.*</span> X<span class="op">.^</span><span class="fl">2</span> <span class="op">.+</span> <span class="fl">6</span> <span class="op">.*</span> X<span class="op">.^</span><span class="fl">3</span> <span class="op">.-</span> <span class="fu">sqrt</span>.(X))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="28" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">f</span>(x) <span class="op">=</span> <span class="fl">3</span> <span class="op">*</span> <span class="fu">sin</span>(x) <span class="op">*</span> <span class="fu">cos</span>(x) <span class="op">-</span> <span class="fl">5</span> <span class="op">*</span> <span class="fu">exp</span>(<span class="op">-</span>x) <span class="op">+</span> <span class="fl">2</span></span>
+<span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> [<span class="fl">1.0</span> <span class="fl">2.0</span>; <span class="fl">3.0</span> <span class="fl">4.0</span>];</span>
+<span id="cb28-4"><a href="" aria-hidden="true" tabindex="-1"></a>X <span class="op">.=</span> <span class="fu">f</span>.(<span class="fl">2</span> <span class="op">.*</span> X<span class="op">.^</span><span class="fl">2</span> <span class="op">.+</span> <span class="fl">6</span> <span class="op">.*</span> X<span class="op">.^</span><span class="fl">3</span> <span class="op">.-</span> <span class="fu">sqrt</span>.(X))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>2×2 Matrix{Float64}:
  3.48135   3.05936
  0.500912  0.527089</code></pre>
 </div>
 </div>
-<div id="20" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="fl">1.0</span>, <span class="fl">2.0</span>];</span>
-<span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [<span class="fl">3.0</span>, <span class="fl">4.0</span>];</span>
-<span id="cb20-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="" aria-hidden="true" tabindex="-1"></a>a <span class="op">.*</span> b<span class="op">'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="30" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="fl">1.0</span>, <span class="fl">2.0</span>];</span>
+<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [<span class="fl">3.0</span>, <span class="fl">4.0</span>];</span>
+<span id="cb30-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="" aria-hidden="true" tabindex="-1"></a>a <span class="op">.*</span> b<span class="op">'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>2×2 Matrix{Float64}:
  3.0  4.0
@@ -373,43 +434,63 @@ Mosè Giordano
 </section>
 <section class="slide level2">
 <h2>The <code>@time</code> macro</h2>
-<p>Julia comes with a simple macro <code>@time</code> for measuring elapsed time of sufficiently long-running functions:</p>
-<div id="22" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> <span class="fu">sleep</span>(<span class="fl">0.1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Julia comes with a simple macro <a href="https://docs.julialang.org/en/v1/base/base/#Base.@time"><code>@time</code></a> for measuring elapsed time of sufficiently long-running functions:</p>
+<div id="32" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> <span class="fu">sleep</span>(<span class="fl">0.1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  0.101148 seconds (6 allocations: 224 bytes)</code></pre>
+<pre><code>  0.101199 seconds (6 allocations: 224 bytes)</code></pre>
 </div>
 </div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Caveat</strong></p>
+</div>
+<div class="callout-content">
 <p>This may not provide useful information for very quick functions (resolution is of the order of ~millisecond):</p>
-<div id="24" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span></span>
-<span id="cb24-2"><a href="" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> <span class="fu">randn</span>(<span class="fl">100</span>)</span>
-<span id="cb24-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">norm</span>(A) <span class="co"># warm up</span></span>
-<span id="cb24-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> <span class="fu">norm</span>(A)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="34" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span></span>
+<span id="cb34-2"><a href="" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> <span class="fu">randn</span>(<span class="fl">100</span>);</span>
+<span id="cb34-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">norm</span>(A) <span class="co"># warm up</span></span>
+<span id="cb34-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> <span class="fu">norm</span>(A)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  0.000004 seconds (1 allocation: 16 bytes)</code></pre>
+<pre><code>  0.000008 seconds (1 allocation: 16 bytes)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>9.147004157678</code></pre>
+<pre><code>10.049551106273537</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
 <section class="slide level2">
 <h2>The <code>BenchmarkTools.jl</code> package</h2>
 <p>For more accurate timing of functions, packages like <a href="https://github.com/JuliaCI/BenchmarkTools.jl"><code>BenchmarkTools.jl</code></a> and <a href="https://github.com/LilithHafner/Chairmarks.jl"><code>ChairMarks.jl</code></a> provide more advanced tools:</p>
-<div id="26" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">BenchmarkTools</span></span>
-<span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">norm</span>(A) setup<span class="op">=</span>(A <span class="op">=</span> <span class="fu">randn</span>(<span class="fl">100</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="36" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb37-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">BenchmarkTools</span></span>
+<span id="cb37-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">norm</span>(A) setup<span class="op">=</span>(A <span class="op">=</span> <span class="fu">randn</span>(<span class="fl">100</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
+   1142.5 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerJSONExt<span class="ansi-bright-black-fg"> (serial)</span>
+  1 dependency successfully precompiled in 1 seconds
+</pre>
+</div>
+</div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div class="ansi-escaped-output">
-<pre>BenchmarkTools.Trial: 10000 samples with 977 evaluations per sample.
- Range <span class="ansi-bright-black-fg">(</span><span class="ansi-cyan-fg ansi-bold">min</span> … <span class="ansi-magenta-fg">max</span><span class="ansi-bright-black-fg">):  </span><span class="ansi-cyan-fg ansi-bold">67.465 ns</span> … <span class="ansi-magenta-fg">134.478 ns</span>  <span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>min … max<span class="ansi-bright-black-fg">): </span>0.00% … 0.00%
- Time  <span class="ansi-bright-black-fg">(</span><span class="ansi-blue-fg ansi-bold">median</span><span class="ansi-bright-black-fg">):     </span><span class="ansi-blue-fg ansi-bold">69.772 ns               </span><span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>median<span class="ansi-bright-black-fg">):    </span>0.00%
- Time  <span class="ansi-bright-black-fg">(</span><span class="ansi-green-fg ansi-bold">mean</span> ± <span class="ansi-green-fg">σ</span><span class="ansi-bright-black-fg">):   </span><span class="ansi-green-fg ansi-bold">70.007 ns</span> ± <span class="ansi-green-fg">  2.266 ns</span>  <span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>mean ± σ<span class="ansi-bright-black-fg">):  </span>0.00% ± 0.00%
+<pre>BenchmarkTools.Trial: 10000 samples with 989 evaluations per sample.
+ Range <span class="ansi-bright-black-fg">(</span><span class="ansi-cyan-fg ansi-bold">min</span> … <span class="ansi-magenta-fg">max</span><span class="ansi-bright-black-fg">):  </span><span class="ansi-cyan-fg ansi-bold">42.636 ns</span> … <span class="ansi-magenta-fg">92.844 ns</span>  <span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>min … max<span class="ansi-bright-black-fg">): </span>0.00% … 0.00%
+ Time  <span class="ansi-bright-black-fg">(</span><span class="ansi-blue-fg ansi-bold">median</span><span class="ansi-bright-black-fg">):     </span><span class="ansi-blue-fg ansi-bold">44.857 ns              </span><span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>median<span class="ansi-bright-black-fg">):    </span>0.00%
+ Time  <span class="ansi-bright-black-fg">(</span><span class="ansi-green-fg ansi-bold">mean</span> ± <span class="ansi-green-fg">σ</span><span class="ansi-bright-black-fg">):   </span><span class="ansi-green-fg ansi-bold">45.330 ns</span> ± <span class="ansi-green-fg"> 1.995 ns</span>  <span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>mean ± σ<span class="ansi-bright-black-fg">):  </span>0.00% ± 0.00%
 
-      ▅▄▄▄▄▄▄▄▃<span class="ansi-blue-fg">█</span> <span class="ansi-green-fg"> </span>                                      ▁▁▁▁   ▂
-  ▄▄▃▇█████████<span class="ansi-blue-fg">█</span>▅<span class="ansi-green-fg">▆</span>▅█▇▄▅▄▆▅▆▆▆▆▃▁▁▁▃▁▃▅▁▁▁▁▁▁▁▃▄▄▅▆▆▇█████████▇ █
-  67.5 ns<span class="ansi-bright-black-fg">       </span><span class="ansi-bright-black-fg">Histogram: </span><span class="ansi-bright-black-fg ansi-bold">log(</span><span class="ansi-bright-black-fg">frequency</span><span class="ansi-bright-black-fg ansi-bold">)</span><span class="ansi-bright-black-fg"> by time</span>      77.9 ns <span class="ansi-bold">&lt;</span>
+      ▁   ▃▇▅▅█▄<span class="ansi-blue-fg">▄</span>▇▆<span class="ansi-green-fg">▄</span>▆▃▃▂  ▁ ▄▅            ▁▁▁                 ▂
+  ▅▆▆▅██▇███████<span class="ansi-blue-fg">█</span>██<span class="ansi-green-fg">█</span>████▇▇████▇▅▅▃▁▄▅▅▄▄▇█████████▇▇▇▄▅▆▅▅▆▆▇ █
+  42.6 ns<span class="ansi-bright-black-fg">      </span><span class="ansi-bright-black-fg">Histogram: </span><span class="ansi-bright-black-fg ansi-bold">log(</span><span class="ansi-bright-black-fg">frequency</span><span class="ansi-bright-black-fg ansi-bold">)</span><span class="ansi-bright-black-fg"> by time</span>      52.1 ns <span class="ansi-bold">&lt;</span>
 
  Memory estimate<span class="ansi-bright-black-fg">: </span><span class="ansi-yellow-fg">0 bytes</span>, allocs estimate<span class="ansi-bright-black-fg">: </span><span class="ansi-yellow-fg">0</span>.</pre>
 </div>
@@ -418,121 +499,121 @@ Mosè Giordano
 </section>
 <section class="slide level2 scrollable">
 <h2>Profiling Julia code</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb28-1"><a href="" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="im">using</span> <span class="bu">Profile</span>, <span class="bu">LinearAlgebra</span></span>
-<span id="cb28-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> N <span class="op">=</span> <span class="fl">4_000</span>; A <span class="op">=</span> <span class="fu">randn</span>(N, N); B <span class="op">=</span> <span class="fu">randn</span>(N, N); C <span class="op">=</span> <span class="fu">randn</span>(N, N);</span>
-<span id="cb28-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-5"><a href="" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="bu">Profile</span>.<span class="fu">clear</span>()</span>
-<span id="cb28-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-7"><a href="" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="bu">Profile</span>.<span class="pp">@profile</span> <span class="fu">mul!</span>(C, A, B);</span>
-<span id="cb28-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-9"><a href="" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="bu">Profile</span>.<span class="fu">print</span>()</span>
-<span id="cb28-10"><a href="" aria-hidden="true" tabindex="-1"></a>Overhead ╎ [<span class="op">+</span>additional indent] Count File<span class="op">:</span>Line  <span class="dt">Function</span></span>
-<span id="cb28-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">=========================================================</span></span>
-<span id="cb28-12"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎<span class="fl">6</span>    <span class="pp">@Base</span><span class="op">/</span>client.jl<span class="op">:</span><span class="fl">561</span>  <span class="fu">_start</span>()</span>
-<span id="cb28-13"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎ <span class="fl">6</span>    <span class="pp">@Base</span><span class="op">/</span>client.jl<span class="op">:</span><span class="fl">586</span>  repl_main</span>
-<span id="cb28-14"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎  <span class="fl">6</span>    <span class="pp">@Base</span><span class="op">/</span>client.jl<span class="op">:</span><span class="fl">499</span>  <span class="fu">run_main_repl</span>(interactive<span class="op">::</span><span class="dt">Bool</span>, quiet<span class="op">::</span><span class="dt">Bool</span>, banner<span class="op">::</span><span class="dt">Symbol</span>, history_file<span class="op">::</span><span class="dt">Bool</span>)</span>
-<span id="cb28-15"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎   <span class="fl">6</span>    <span class="pp">@Base</span><span class="op">/</span>client.jl<span class="op">:</span><span class="fl">478</span>  <span class="fu">run_std_repl</span>(<span class="bu">REPL</span><span class="op">::</span><span class="dt">Module</span>, quiet<span class="op">::</span><span class="dt">Bool</span>, banner<span class="op">::</span><span class="dt">Symbol</span>, history_file<span class="op">::</span><span class="dt">Bool</span>)</span>
-<span id="cb28-16"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">639</span>  run_repl</span>
-<span id="cb28-17"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎     <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">653</span>  <span class="co">#run_repl#50</span></span>
-<span id="cb28-18"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎ <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">424</span>  start_repl_backend</span>
-<span id="cb28-19"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎  <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">427</span>  <span class="co">#start_repl_backend#41</span></span>
-<span id="cb28-20"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎   <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">452</span>  repl_backend_loop</span>
-<span id="cb28-21"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">330</span>  eval_user_input</span>
-<span id="cb28-22"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎     <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">305</span>  toplevel_eval_with_hooks</span>
-<span id="cb28-23"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎ <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">312</span>  toplevel_eval_with_hooks</span>
-<span id="cb28-24"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎  <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">312</span>  toplevel_eval_with_hooks</span>
-<span id="cb28-25"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎   <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">308</span>  toplevel_eval_with_hooks</span>
-<span id="cb28-26"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fl">1</span>╎    ╎    ╎    <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">301</span>  __repl_entry_eval_expanded_with_loc</span>
-<span id="cb28-27"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎     <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">265</span>  <span class="fu">mul!</span>(C<span class="op">::</span><span class="dt">Matrix{Float64}</span>, A<span class="op">::</span><span class="dt">Matrix{Float64}</span>, B<span class="op">::</span><span class="dt">Matrix{Float64}</span>)</span>
-<span id="cb28-28"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎ <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">297</span>  mul!</span>
-<span id="cb28-29"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎  <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">328</span>  _mul!</span>
-<span id="cb28-30"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎   <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">507</span>  <span class="fu">generic_matmatmul_wrapper!</span>(C<span class="op">::</span><span class="dt">Matrix{Float64}</span>, tA<span class="op">::</span><span class="dt">Char</span>, tB<span class="op">::</span><span class="dt">Char</span>, A<span class="op">::</span><span class="dt">Matrix{Float64}</span>, B<span class="op">::</span><span class="dt">Matrix{Float64}</span>, α<span class="op">::</span><span class="dt">Bool</span>, β<span class="op">::</span><span class="dt">Bool</span>, val<span class="op">::</span><span class="dt">Val{LinearAlgebra.BlasFlag.GEMM}</span>)</span>
-<span id="cb28-31"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">527</span>  _syrk_herk_gemm_wrapper!</span>
-<span id="cb28-32"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎     <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">808</span>  gemm_wrapper!</span>
-<span id="cb28-33"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fl">4</span>╎    ╎    ╎    ╎    ╎ <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>blas.jl<span class="op">:</span><span class="fl">1648</span>  <span class="fu">gemm!</span>(transA<span class="op">::</span><span class="dt">Char</span>, transB<span class="op">::</span><span class="dt">Char</span>, alpha<span class="op">::</span><span class="dt">Float64</span>, A<span class="op">::</span><span class="dt">Matrix{Float64}</span>, B<span class="op">::</span><span class="dt">Matrix{Float64}</span>, beta<span class="op">::</span><span class="dt">Float64</span>, C<span class="op">::</span><span class="dt">Matrix{Float64}</span>)</span>
-<span id="cb28-34"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎<span class="fl">591</span>  <span class="pp">@Base</span><span class="op">/</span>task.jl<span class="op">:</span><span class="fl">839</span>  <span class="fu">task_done_hook</span>(t<span class="op">::</span><span class="dt">Task</span>)</span>
-<span id="cb28-35"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎ <span class="fl">591</span>  <span class="pp">@Base</span><span class="op">/</span>task.jl<span class="op">:</span><span class="fl">1199</span>  <span class="fu">wait</span>()</span>
-<span id="cb28-36"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fl">591</span>╎  <span class="fl">591</span>  <span class="pp">@Base</span><span class="op">/</span>task.jl<span class="op">:</span><span class="fl">1187</span>  <span class="fu">poptask</span>(W<span class="op">::</span><span class="dt">Base.IntrusiveLinkedListSynchronized{Task}</span>)</span>
-<span id="cb28-37"><a href="" aria-hidden="true" tabindex="-1"></a>Total snapshots<span class="op">:</span> <span class="fl">1182</span>. Utilization<span class="op">:</span> <span class="fl">50</span><span class="op">%</span> across all threads and tasks. Use the <span class="ss">`groupby`</span> kwarg to <span class="cf">break</span> down by thread and<span class="op">/</span>or task.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb38-1"><a href="" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="im">using</span> <span class="bu">Profile</span>, <span class="bu">LinearAlgebra</span></span>
+<span id="cb38-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> N <span class="op">=</span> <span class="fl">4_000</span>; A <span class="op">=</span> <span class="fu">randn</span>(N, N); B <span class="op">=</span> <span class="fu">randn</span>(N, N); C <span class="op">=</span> <span class="fu">randn</span>(N, N);</span>
+<span id="cb38-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="bu">Profile</span>.<span class="fu">clear</span>()</span>
+<span id="cb38-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-7"><a href="" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="bu">Profile</span>.<span class="pp">@profile</span> <span class="fu">mul!</span>(C, A, B);</span>
+<span id="cb38-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-9"><a href="" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="bu">Profile</span>.<span class="fu">print</span>()</span>
+<span id="cb38-10"><a href="" aria-hidden="true" tabindex="-1"></a>Overhead ╎ [<span class="op">+</span>additional indent] Count File<span class="op">:</span>Line  <span class="dt">Function</span></span>
+<span id="cb38-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">=========================================================</span></span>
+<span id="cb38-12"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎<span class="fl">6</span>    <span class="pp">@Base</span><span class="op">/</span>client.jl<span class="op">:</span><span class="fl">561</span>  <span class="fu">_start</span>()</span>
+<span id="cb38-13"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎ <span class="fl">6</span>    <span class="pp">@Base</span><span class="op">/</span>client.jl<span class="op">:</span><span class="fl">586</span>  repl_main</span>
+<span id="cb38-14"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎  <span class="fl">6</span>    <span class="pp">@Base</span><span class="op">/</span>client.jl<span class="op">:</span><span class="fl">499</span>  <span class="fu">run_main_repl</span>(interactive<span class="op">::</span><span class="dt">Bool</span>, quiet<span class="op">::</span><span class="dt">Bool</span>, banner<span class="op">::</span><span class="dt">Symbol</span>, history_file<span class="op">::</span><span class="dt">Bool</span>)</span>
+<span id="cb38-15"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎   <span class="fl">6</span>    <span class="pp">@Base</span><span class="op">/</span>client.jl<span class="op">:</span><span class="fl">478</span>  <span class="fu">run_std_repl</span>(<span class="bu">REPL</span><span class="op">::</span><span class="dt">Module</span>, quiet<span class="op">::</span><span class="dt">Bool</span>, banner<span class="op">::</span><span class="dt">Symbol</span>, history_file<span class="op">::</span><span class="dt">Bool</span>)</span>
+<span id="cb38-16"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">639</span>  run_repl</span>
+<span id="cb38-17"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎     <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">653</span>  <span class="co">#run_repl#50</span></span>
+<span id="cb38-18"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎ <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">424</span>  start_repl_backend</span>
+<span id="cb38-19"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎  <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">427</span>  <span class="co">#start_repl_backend#41</span></span>
+<span id="cb38-20"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎   <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">452</span>  repl_backend_loop</span>
+<span id="cb38-21"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">330</span>  eval_user_input</span>
+<span id="cb38-22"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎     <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">305</span>  toplevel_eval_with_hooks</span>
+<span id="cb38-23"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎ <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">312</span>  toplevel_eval_with_hooks</span>
+<span id="cb38-24"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎  <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">312</span>  toplevel_eval_with_hooks</span>
+<span id="cb38-25"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎   <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">308</span>  toplevel_eval_with_hooks</span>
+<span id="cb38-26"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fl">1</span>╎    ╎    ╎    <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">301</span>  __repl_entry_eval_expanded_with_loc</span>
+<span id="cb38-27"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎     <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">265</span>  <span class="fu">mul!</span>(C<span class="op">::</span><span class="dt">Matrix{Float64}</span>, A<span class="op">::</span><span class="dt">Matrix{Float64}</span>, B<span class="op">::</span><span class="dt">Matrix{Float64}</span>)</span>
+<span id="cb38-28"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎ <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">297</span>  mul!</span>
+<span id="cb38-29"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎  <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">328</span>  _mul!</span>
+<span id="cb38-30"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎   <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">507</span>  <span class="fu">generic_matmatmul_wrapper!</span>(C<span class="op">::</span><span class="dt">Matrix{Float64}</span>, tA<span class="op">::</span><span class="dt">Char</span>, tB<span class="op">::</span><span class="dt">Char</span>, A<span class="op">::</span><span class="dt">Matrix{Float64}</span>, B<span class="op">::</span><span class="dt">Matrix{Float64}</span>, α<span class="op">::</span><span class="dt">Bool</span>, β<span class="op">::</span><span class="dt">Bool</span>, val<span class="op">::</span><span class="dt">Val{LinearAlgebra.BlasFlag.GEMM}</span>)</span>
+<span id="cb38-31"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">527</span>  _syrk_herk_gemm_wrapper!</span>
+<span id="cb38-32"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎     <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">808</span>  gemm_wrapper!</span>
+<span id="cb38-33"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fl">4</span>╎    ╎    ╎    ╎    ╎ <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>blas.jl<span class="op">:</span><span class="fl">1648</span>  <span class="fu">gemm!</span>(transA<span class="op">::</span><span class="dt">Char</span>, transB<span class="op">::</span><span class="dt">Char</span>, alpha<span class="op">::</span><span class="dt">Float64</span>, A<span class="op">::</span><span class="dt">Matrix{Float64}</span>, B<span class="op">::</span><span class="dt">Matrix{Float64}</span>, beta<span class="op">::</span><span class="dt">Float64</span>, C<span class="op">::</span><span class="dt">Matrix{Float64}</span>)</span>
+<span id="cb38-34"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎<span class="fl">591</span>  <span class="pp">@Base</span><span class="op">/</span>task.jl<span class="op">:</span><span class="fl">839</span>  <span class="fu">task_done_hook</span>(t<span class="op">::</span><span class="dt">Task</span>)</span>
+<span id="cb38-35"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎ <span class="fl">591</span>  <span class="pp">@Base</span><span class="op">/</span>task.jl<span class="op">:</span><span class="fl">1199</span>  <span class="fu">wait</span>()</span>
+<span id="cb38-36"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fl">591</span>╎  <span class="fl">591</span>  <span class="pp">@Base</span><span class="op">/</span>task.jl<span class="op">:</span><span class="fl">1187</span>  <span class="fu">poptask</span>(W<span class="op">::</span><span class="dt">Base.IntrusiveLinkedListSynchronized{Task}</span>)</span>
+<span id="cb38-37"><a href="" aria-hidden="true" tabindex="-1"></a>Total snapshots<span class="op">:</span> <span class="fl">1182</span>. Utilization<span class="op">:</span> <span class="fl">50</span><span class="op">%</span> across all threads and tasks. Use the <span class="ss">`groupby`</span> kwarg to <span class="cf">break</span> down by thread and<span class="op">/</span>or task.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2 scrollable">
 <h2>Profiling Julia code (cont.)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb29-1"><a href="" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="bu">Profile</span>.<span class="fu">print</span>(; C<span class="op">=</span><span class="cn">true</span>)</span>
-<span id="cb29-2"><a href="" aria-hidden="true" tabindex="-1"></a>Overhead ╎ [<span class="op">+</span>additional indent] Count File<span class="op">:</span>Line  <span class="dt">Function</span></span>
-<span id="cb29-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">=========================================================</span></span>
-<span id="cb29-4"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎<span class="fl">591</span>  <span class="pp">@juliasrc</span><span class="op">/</span>task.c<span class="op">:</span><span class="fl">1260</span>  start_task</span>
-<span id="cb29-5"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎ <span class="fl">591</span>  <span class="pp">@juliasrc</span><span class="op">/</span>task.c<span class="op">:</span><span class="fl">345</span>  jl_finish_task</span>
-<span id="cb29-6"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎  <span class="fl">591</span>  <span class="pp">@juliasrc</span><span class="op">/</span>julia.h<span class="op">:</span><span class="fl">2391</span>  jl_apply</span>
-<span id="cb29-7"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎   <span class="fl">591</span>  <span class="pp">@julialib</span><span class="op">/</span>julia<span class="op">/</span>sys.so<span class="op">:</span>?  jfptr_task_done_hook_36828<span class="fl">.1</span></span>
-<span id="cb29-8"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    <span class="fl">591</span>  <span class="pp">@Base</span><span class="op">/</span>task.jl<span class="op">:</span><span class="fl">839</span>  <span class="fu">task_done_hook</span>(t<span class="op">::</span><span class="dt">Task</span>)</span>
-<span id="cb29-9"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎     <span class="fl">591</span>  <span class="pp">@Base</span><span class="op">/</span>task.jl<span class="op">:</span><span class="fl">1199</span>  <span class="fu">wait</span>()</span>
-<span id="cb29-10"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎ <span class="fl">591</span>  <span class="pp">@Base</span><span class="op">/</span>task.jl<span class="op">:</span><span class="fl">1187</span>  <span class="fu">poptask</span>(W<span class="op">::</span><span class="dt">Base.IntrusiveLinkedListSynchronized{Task}</span>)</span>
-<span id="cb29-11"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎  <span class="fl">591</span>  <span class="pp">@juliasrc</span><span class="op">/</span>scheduler.c<span class="op">:</span><span class="fl">523</span>  ijl_task_get_next</span>
-<span id="cb29-12"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎   <span class="fl">591</span>  <span class="op">/</span>workspace<span class="op">/</span>srcdir<span class="op">/</span>libuv<span class="op">/</span>src<span class="op">/</span>unix<span class="op">/</span>thread.c<span class="op">:</span><span class="fl">822</span>  uv_cond_wait</span>
-<span id="cb29-13"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    <span class="fl">591</span>  <span class="op">/</span>lib<span class="op">/</span>x86_64<span class="op">-</span>linux<span class="op">-</span>gnu<span class="op">/</span>libc.so<span class="fl">.6</span><span class="op">:</span>?  pthread_cond_wait</span>
-<span id="cb29-14"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎     <span class="fl">591</span>  <span class="op">/</span>lib<span class="op">/</span>x86_64<span class="op">-</span>linux<span class="op">-</span>gnu<span class="op">/</span>libc.so<span class="fl">.6</span><span class="op">:</span>?</span>
-<span id="cb29-15"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎ <span class="fl">591</span>  <span class="op">/</span>lib<span class="op">/</span>x86_64<span class="op">-</span>linux<span class="op">-</span>gnu<span class="op">/</span>libc.so<span class="fl">.6</span><span class="op">:</span>?</span>
-<span id="cb29-16"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fl">591</span>╎    ╎    ╎  <span class="fl">591</span>  <span class="op">/</span>lib<span class="op">/</span>x86_64<span class="op">-</span>linux<span class="op">-</span>gnu<span class="op">/</span>libc.so<span class="fl">.6</span><span class="op">:</span>?</span>
-<span id="cb29-17"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fl">585</span>╎<span class="fl">585</span>  <span class="pp">@julialib</span><span class="op">/</span>julia<span class="op">/</span>libopenblas64_.so<span class="op">:</span>?  dgemm_kernel_HASWELL</span>
-<span id="cb29-18"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎<span class="fl">6</span>    <span class="op">/</span>workspace<span class="op">/</span>srcdir<span class="op">/</span>glibc<span class="op">-</span><span class="fl">2.17</span><span class="op">/</span>csu<span class="op">/../</span>sysdeps<span class="op">/</span>x86_64<span class="op">/</span>start.S<span class="op">:</span><span class="fl">123</span></span>
-<span id="cb29-19"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎ <span class="fl">6</span>    <span class="op">/</span>lib<span class="op">/</span>x86_64<span class="op">-</span>linux<span class="op">-</span>gnu<span class="op">/</span>libc.so<span class="fl">.6</span><span class="op">:</span>?  __libc_start_main</span>
-<span id="cb29-20"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎  <span class="fl">6</span>    <span class="op">/</span>lib<span class="op">/</span>x86_64<span class="op">-</span>linux<span class="op">-</span>gnu<span class="op">/</span>libc.so<span class="fl">.6</span><span class="op">:</span>?</span>
-<span id="cb29-21"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎   <span class="fl">6</span>    <span class="op">/</span>cache<span class="op">/</span>build<span class="op">/</span>tester<span class="op">-</span>amdci4<span class="op">-</span><span class="fl">14</span><span class="op">/</span>julialang<span class="op">/</span>julia<span class="op">-</span>release<span class="op">-</span><span class="fl">1</span><span class="op">-</span>dot<span class="op">-</span><span class="fl">12</span><span class="op">/</span>cli<span class="op">/</span>loader_exe.c<span class="op">:</span><span class="fl">58</span>  main</span>
-<span id="cb29-22"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>jlapi.c<span class="op">:</span><span class="fl">1139</span>  jl_repl_entrypoint</span>
-<span id="cb29-23"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎     <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>jlapi.c<span class="op">:</span><span class="fl">971</span>  true_main</span>
-<span id="cb29-24"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎ <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>julia.h<span class="op">:</span><span class="fl">2391</span>  jl_apply</span>
-<span id="cb29-25"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎  <span class="fl">6</span>    <span class="pp">@julialib</span><span class="op">/</span>julia<span class="op">/</span>sys.so<span class="op">:</span>?  jfptr__start_31204<span class="fl">.1</span></span>
-<span id="cb29-26"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎   <span class="fl">6</span>    <span class="pp">@Base</span><span class="op">/</span>client.jl<span class="op">:</span><span class="fl">561</span>  <span class="fu">_start</span>()</span>
-<span id="cb29-27"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    <span class="fl">6</span>    <span class="pp">@Base</span><span class="op">/</span>client.jl<span class="op">:</span><span class="fl">586</span>  repl_main</span>
-<span id="cb29-28"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎     <span class="fl">6</span>    <span class="pp">@Base</span><span class="op">/</span>client.jl<span class="op">:</span><span class="fl">499</span>  <span class="fu">run_main_repl</span>(interactive<span class="op">::</span><span class="dt">Bool</span>, quiet<span class="op">::</span><span class="dt">Bool</span>, banner<span class="op">::</span><span class="dt">Symbol</span>, history_file<span class="op">::</span><span class="dt">Bool</span>)</span>
-<span id="cb29-29"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎ <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>builtins.c<span class="op">:</span><span class="fl">881</span>  jl_f_invokelatest</span>
-<span id="cb29-30"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎  <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>julia.h<span class="op">:</span><span class="fl">2391</span>  jl_apply</span>
-<span id="cb29-31"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎   <span class="fl">6</span>    <span class="pp">@julialib</span><span class="op">/</span>julia<span class="op">/</span>sys.so<span class="op">:</span>?  jfptr_run_std_repl_62877<span class="fl">.1</span></span>
-<span id="cb29-32"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    <span class="fl">6</span>    <span class="pp">@Base</span><span class="op">/</span>client.jl<span class="op">:</span><span class="fl">478</span>  <span class="fu">run_std_repl</span>(<span class="bu">REPL</span><span class="op">::</span><span class="dt">Module</span>, quiet<span class="op">::</span><span class="dt">Bool</span>, banner<span class="op">::</span><span class="dt">Symbol</span>, history_file<span class="op">::</span><span class="dt">Bool</span>)</span>
-<span id="cb29-33"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎     <span class="fl">6</span>    <span class="op">…</span>up<span class="op">/</span>julia<span class="op">-</span><span class="fl">1.12.1</span><span class="op">+</span><span class="fl">0</span>.x64.linux.gnu<span class="op">/</span>share<span class="op">/</span>julia<span class="op">/</span>compiled<span class="op">/</span>v1<span class="fl">.12</span><span class="op">/</span><span class="bu">REPL</span><span class="op">/</span>u0gqU_UDl4g.so<span class="op">:</span>?  jfptr_run_repl_18594<span class="fl">.1</span></span>
-<span id="cb29-34"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎ <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">639</span>  run_repl</span>
-<span id="cb29-35"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎  <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">653</span>  <span class="co">#run_repl#50</span></span>
-<span id="cb29-36"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎   <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">424</span>  start_repl_backend</span>
-<span id="cb29-37"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">427</span>  <span class="co">#start_repl_backend#41</span></span>
-<span id="cb29-38"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎     <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">452</span>  repl_backend_loop</span>
-<span id="cb29-39"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎ <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">330</span>  eval_user_input</span>
-<span id="cb29-40"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎  <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">305</span>  toplevel_eval_with_hooks</span>
-<span id="cb29-41"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎   <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">312</span>  toplevel_eval_with_hooks</span>
-<span id="cb29-42"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">312</span>  toplevel_eval_with_hooks</span>
-<span id="cb29-43"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎     <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">308</span>  toplevel_eval_with_hooks</span>
-<span id="cb29-44"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎ <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>builtins.c<span class="op">:</span><span class="fl">881</span>  jl_f_invokelatest</span>
-<span id="cb29-45"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎  <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>julia.h<span class="op">:</span><span class="fl">2391</span>  jl_apply</span>
-<span id="cb29-46"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎   <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">301</span>  __repl_entry_eval_expanded_with_loc</span>
-<span id="cb29-47"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>toplevel.c<span class="op">:</span><span class="fl">1035</span>  jl_toplevel_eval_flex</span>
-<span id="cb29-48"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎     <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>interpreter.c<span class="op">:</span><span class="fl">898</span>  jl_interpret_toplevel_thunk</span>
-<span id="cb29-49"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎ <span class="fl">5</span>    <span class="pp">@juliasrc</span><span class="op">/</span>interpreter.c<span class="op">:</span><span class="fl">558</span>  eval_body</span>
-<span id="cb29-50"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎  <span class="fl">5</span>    <span class="pp">@juliasrc</span><span class="op">/</span>interpreter.c<span class="op">:</span><span class="fl">581</span>  eval_body</span>
-<span id="cb29-51"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎   <span class="fl">5</span>    <span class="pp">@juliasrc</span><span class="op">/</span>interpreter.c<span class="op">:</span><span class="fl">243</span>  eval_value</span>
-<span id="cb29-52"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎    <span class="fl">5</span>    <span class="pp">@juliasrc</span><span class="op">/</span>interpreter.c<span class="op">:</span><span class="fl">123</span>  do_call</span>
-<span id="cb29-53"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎     <span class="fl">5</span>    <span class="pp">@juliasrc</span><span class="op">/</span>julia.h<span class="op">:</span><span class="fl">2391</span>  jl_apply</span>
-<span id="cb29-54"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎ <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">265</span>  <span class="fu">mul!</span>(C<span class="op">::</span><span class="dt">Matrix{Float64}</span>, A<span class="op">::</span><span class="dt">Matrix{Float64}</span>, B<span class="op">::</span><span class="dt">Matrix{Float64}</span>)</span>
-<span id="cb29-55"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎  <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">297</span>  mul!</span>
-<span id="cb29-56"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎   <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">328</span>  _mul!</span>
-<span id="cb29-57"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">507</span>  <span class="fu">generic_matmatmul_wrapper!</span>(C<span class="op">::</span><span class="dt">Matrix{Float64}</span>, tA<span class="op">::</span><span class="dt">Char</span>, tB<span class="op">::</span><span class="dt">Char</span>, A<span class="op">::</span><span class="dt">Matrix{Float64}</span>, B<span class="op">::</span><span class="dt">Matrix{Float64}</span>, α<span class="op">::</span><span class="dt">Bool</span>, β<span class="op">::</span><span class="dt">Bool</span>, val<span class="op">::</span><span class="dt">Val{LinearAlgebra.BlasF…</span></span>
-<span id="cb29-58"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎     5    @LinearAlgebra/src/matmul.jl:527  _syrk_herk_gemm_wrapper!</span></span>
-<span id="cb29-59"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎ 5    @LinearAlgebra/src/matmul.jl:808  gemm_wrapper!</span></span>
-<span id="cb29-60"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎  5    @LinearAlgebra/src/blas.jl:1648  gemm!(transA::Char, transB::Char, alpha::Float64, A::Matrix{Float64}, B::Matrix{Float64}, beta::Float64, C::Matrix{Float64})</span></span>
-<span id="cb29-61"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎   5    @julialib/julia/libopenblas64_.so:?  dgemm_64_</span></span>
-<span id="cb29-62"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    5    @julialib/julia/libopenblas64_.so:?  dgemm_thread_nn</span></span>
-<span id="cb29-63"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎     5    @julialib/julia/libopenblas64_.so:?  gemm_driver.isra.0</span></span>
-<span id="cb29-64"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎ 5    @julialib/julia/libopenblas64_.so:?  exec_blas</span></span>
-<span id="cb29-65"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎  5    @julialib/julia/libopenblas64_.so:?  inner_thread</span></span>
-<span id="cb29-66"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎   1    @julialib/julia/libopenblas64_.so:?  dgemm_beta_HASWELL</span></span>
-<span id="cb29-67"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    1    @julialib/julia/libopenblas64_.so:?</span></span>
-<span id="cb29-68"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">  3╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎   3    @julialib/julia/libopenblas64_.so:?  dgemm_itcopy_HASWELL</span></span>
-<span id="cb29-69"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">  1╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎   1    @julialib/julia/libopenblas64_.so:?  dgemm_oncopy_HASWELL</span></span>
-<span id="cb29-70"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎ 1    @juliasrc/interpreter.c:707  eval_body</span></span>
-<span id="cb29-71"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎  1    @juliasrc/interpreter.c:194  eval_stmt_value</span></span>
-<span id="cb29-72"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎   1    @juliasrc/interpreter.c:243  eval_value</span></span>
-<span id="cb29-73"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    1    @juliasrc/interpreter.c:122  do_call</span></span>
-<span id="cb29-74"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">  1╎    ╎    ╎    ╎    ╎    ╎    ╎     1    @juliasrc/interpreter.c:201  eval_value</span></span>
-<span id="cb29-75"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">Total snapshots: 1182. Utilization: 50% across all threads and tasks. Use the `groupby` kwarg to break down by thread and/or task.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a>julia<span class="op">&gt;</span> <span class="bu">Profile</span>.<span class="fu">print</span>(; C<span class="op">=</span><span class="cn">true</span>)</span>
+<span id="cb39-2"><a href="" aria-hidden="true" tabindex="-1"></a>Overhead ╎ [<span class="op">+</span>additional indent] Count File<span class="op">:</span>Line  <span class="dt">Function</span></span>
+<span id="cb39-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="op">=========================================================</span></span>
+<span id="cb39-4"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎<span class="fl">591</span>  <span class="pp">@juliasrc</span><span class="op">/</span>task.c<span class="op">:</span><span class="fl">1260</span>  start_task</span>
+<span id="cb39-5"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎ <span class="fl">591</span>  <span class="pp">@juliasrc</span><span class="op">/</span>task.c<span class="op">:</span><span class="fl">345</span>  jl_finish_task</span>
+<span id="cb39-6"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎  <span class="fl">591</span>  <span class="pp">@juliasrc</span><span class="op">/</span>julia.h<span class="op">:</span><span class="fl">2391</span>  jl_apply</span>
+<span id="cb39-7"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎   <span class="fl">591</span>  <span class="pp">@julialib</span><span class="op">/</span>julia<span class="op">/</span>sys.so<span class="op">:</span>?  jfptr_task_done_hook_36828<span class="fl">.1</span></span>
+<span id="cb39-8"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    <span class="fl">591</span>  <span class="pp">@Base</span><span class="op">/</span>task.jl<span class="op">:</span><span class="fl">839</span>  <span class="fu">task_done_hook</span>(t<span class="op">::</span><span class="dt">Task</span>)</span>
+<span id="cb39-9"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎     <span class="fl">591</span>  <span class="pp">@Base</span><span class="op">/</span>task.jl<span class="op">:</span><span class="fl">1199</span>  <span class="fu">wait</span>()</span>
+<span id="cb39-10"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎ <span class="fl">591</span>  <span class="pp">@Base</span><span class="op">/</span>task.jl<span class="op">:</span><span class="fl">1187</span>  <span class="fu">poptask</span>(W<span class="op">::</span><span class="dt">Base.IntrusiveLinkedListSynchronized{Task}</span>)</span>
+<span id="cb39-11"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎  <span class="fl">591</span>  <span class="pp">@juliasrc</span><span class="op">/</span>scheduler.c<span class="op">:</span><span class="fl">523</span>  ijl_task_get_next</span>
+<span id="cb39-12"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎   <span class="fl">591</span>  <span class="op">/</span>workspace<span class="op">/</span>srcdir<span class="op">/</span>libuv<span class="op">/</span>src<span class="op">/</span>unix<span class="op">/</span>thread.c<span class="op">:</span><span class="fl">822</span>  uv_cond_wait</span>
+<span id="cb39-13"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    <span class="fl">591</span>  <span class="op">/</span>lib<span class="op">/</span>x86_64<span class="op">-</span>linux<span class="op">-</span>gnu<span class="op">/</span>libc.so<span class="fl">.6</span><span class="op">:</span>?  pthread_cond_wait</span>
+<span id="cb39-14"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎     <span class="fl">591</span>  <span class="op">/</span>lib<span class="op">/</span>x86_64<span class="op">-</span>linux<span class="op">-</span>gnu<span class="op">/</span>libc.so<span class="fl">.6</span><span class="op">:</span>?</span>
+<span id="cb39-15"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎ <span class="fl">591</span>  <span class="op">/</span>lib<span class="op">/</span>x86_64<span class="op">-</span>linux<span class="op">-</span>gnu<span class="op">/</span>libc.so<span class="fl">.6</span><span class="op">:</span>?</span>
+<span id="cb39-16"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fl">591</span>╎    ╎    ╎  <span class="fl">591</span>  <span class="op">/</span>lib<span class="op">/</span>x86_64<span class="op">-</span>linux<span class="op">-</span>gnu<span class="op">/</span>libc.so<span class="fl">.6</span><span class="op">:</span>?</span>
+<span id="cb39-17"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fl">585</span>╎<span class="fl">585</span>  <span class="pp">@julialib</span><span class="op">/</span>julia<span class="op">/</span>libopenblas64_.so<span class="op">:</span>?  dgemm_kernel_HASWELL</span>
+<span id="cb39-18"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎<span class="fl">6</span>    <span class="op">/</span>workspace<span class="op">/</span>srcdir<span class="op">/</span>glibc<span class="op">-</span><span class="fl">2.17</span><span class="op">/</span>csu<span class="op">/../</span>sysdeps<span class="op">/</span>x86_64<span class="op">/</span>start.S<span class="op">:</span><span class="fl">123</span></span>
+<span id="cb39-19"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎ <span class="fl">6</span>    <span class="op">/</span>lib<span class="op">/</span>x86_64<span class="op">-</span>linux<span class="op">-</span>gnu<span class="op">/</span>libc.so<span class="fl">.6</span><span class="op">:</span>?  __libc_start_main</span>
+<span id="cb39-20"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎  <span class="fl">6</span>    <span class="op">/</span>lib<span class="op">/</span>x86_64<span class="op">-</span>linux<span class="op">-</span>gnu<span class="op">/</span>libc.so<span class="fl">.6</span><span class="op">:</span>?</span>
+<span id="cb39-21"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎   <span class="fl">6</span>    <span class="op">/</span>cache<span class="op">/</span>build<span class="op">/</span>tester<span class="op">-</span>amdci4<span class="op">-</span><span class="fl">14</span><span class="op">/</span>julialang<span class="op">/</span>julia<span class="op">-</span>release<span class="op">-</span><span class="fl">1</span><span class="op">-</span>dot<span class="op">-</span><span class="fl">12</span><span class="op">/</span>cli<span class="op">/</span>loader_exe.c<span class="op">:</span><span class="fl">58</span>  main</span>
+<span id="cb39-22"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>jlapi.c<span class="op">:</span><span class="fl">1139</span>  jl_repl_entrypoint</span>
+<span id="cb39-23"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎     <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>jlapi.c<span class="op">:</span><span class="fl">971</span>  true_main</span>
+<span id="cb39-24"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎ <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>julia.h<span class="op">:</span><span class="fl">2391</span>  jl_apply</span>
+<span id="cb39-25"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎  <span class="fl">6</span>    <span class="pp">@julialib</span><span class="op">/</span>julia<span class="op">/</span>sys.so<span class="op">:</span>?  jfptr__start_31204<span class="fl">.1</span></span>
+<span id="cb39-26"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎   <span class="fl">6</span>    <span class="pp">@Base</span><span class="op">/</span>client.jl<span class="op">:</span><span class="fl">561</span>  <span class="fu">_start</span>()</span>
+<span id="cb39-27"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    <span class="fl">6</span>    <span class="pp">@Base</span><span class="op">/</span>client.jl<span class="op">:</span><span class="fl">586</span>  repl_main</span>
+<span id="cb39-28"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎     <span class="fl">6</span>    <span class="pp">@Base</span><span class="op">/</span>client.jl<span class="op">:</span><span class="fl">499</span>  <span class="fu">run_main_repl</span>(interactive<span class="op">::</span><span class="dt">Bool</span>, quiet<span class="op">::</span><span class="dt">Bool</span>, banner<span class="op">::</span><span class="dt">Symbol</span>, history_file<span class="op">::</span><span class="dt">Bool</span>)</span>
+<span id="cb39-29"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎ <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>builtins.c<span class="op">:</span><span class="fl">881</span>  jl_f_invokelatest</span>
+<span id="cb39-30"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎  <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>julia.h<span class="op">:</span><span class="fl">2391</span>  jl_apply</span>
+<span id="cb39-31"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎   <span class="fl">6</span>    <span class="pp">@julialib</span><span class="op">/</span>julia<span class="op">/</span>sys.so<span class="op">:</span>?  jfptr_run_std_repl_62877<span class="fl">.1</span></span>
+<span id="cb39-32"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    <span class="fl">6</span>    <span class="pp">@Base</span><span class="op">/</span>client.jl<span class="op">:</span><span class="fl">478</span>  <span class="fu">run_std_repl</span>(<span class="bu">REPL</span><span class="op">::</span><span class="dt">Module</span>, quiet<span class="op">::</span><span class="dt">Bool</span>, banner<span class="op">::</span><span class="dt">Symbol</span>, history_file<span class="op">::</span><span class="dt">Bool</span>)</span>
+<span id="cb39-33"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎     <span class="fl">6</span>    <span class="op">…</span>up<span class="op">/</span>julia<span class="op">-</span><span class="fl">1.12.1</span><span class="op">+</span><span class="fl">0</span>.x64.linux.gnu<span class="op">/</span>share<span class="op">/</span>julia<span class="op">/</span>compiled<span class="op">/</span>v1<span class="fl">.12</span><span class="op">/</span><span class="bu">REPL</span><span class="op">/</span>u0gqU_UDl4g.so<span class="op">:</span>?  jfptr_run_repl_18594<span class="fl">.1</span></span>
+<span id="cb39-34"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎ <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">639</span>  run_repl</span>
+<span id="cb39-35"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎  <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">653</span>  <span class="co">#run_repl#50</span></span>
+<span id="cb39-36"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎   <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">424</span>  start_repl_backend</span>
+<span id="cb39-37"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">427</span>  <span class="co">#start_repl_backend#41</span></span>
+<span id="cb39-38"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎     <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">452</span>  repl_backend_loop</span>
+<span id="cb39-39"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎ <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">330</span>  eval_user_input</span>
+<span id="cb39-40"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎  <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">305</span>  toplevel_eval_with_hooks</span>
+<span id="cb39-41"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎   <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">312</span>  toplevel_eval_with_hooks</span>
+<span id="cb39-42"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">312</span>  toplevel_eval_with_hooks</span>
+<span id="cb39-43"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎     <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">308</span>  toplevel_eval_with_hooks</span>
+<span id="cb39-44"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎ <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>builtins.c<span class="op">:</span><span class="fl">881</span>  jl_f_invokelatest</span>
+<span id="cb39-45"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎  <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>julia.h<span class="op">:</span><span class="fl">2391</span>  jl_apply</span>
+<span id="cb39-46"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎   <span class="fl">6</span>    <span class="pp">@REPL</span><span class="op">/</span>src<span class="op">/</span><span class="bu">REPL</span>.jl<span class="op">:</span><span class="fl">301</span>  __repl_entry_eval_expanded_with_loc</span>
+<span id="cb39-47"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>toplevel.c<span class="op">:</span><span class="fl">1035</span>  jl_toplevel_eval_flex</span>
+<span id="cb39-48"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎     <span class="fl">6</span>    <span class="pp">@juliasrc</span><span class="op">/</span>interpreter.c<span class="op">:</span><span class="fl">898</span>  jl_interpret_toplevel_thunk</span>
+<span id="cb39-49"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎ <span class="fl">5</span>    <span class="pp">@juliasrc</span><span class="op">/</span>interpreter.c<span class="op">:</span><span class="fl">558</span>  eval_body</span>
+<span id="cb39-50"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎  <span class="fl">5</span>    <span class="pp">@juliasrc</span><span class="op">/</span>interpreter.c<span class="op">:</span><span class="fl">581</span>  eval_body</span>
+<span id="cb39-51"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎   <span class="fl">5</span>    <span class="pp">@juliasrc</span><span class="op">/</span>interpreter.c<span class="op">:</span><span class="fl">243</span>  eval_value</span>
+<span id="cb39-52"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎    <span class="fl">5</span>    <span class="pp">@juliasrc</span><span class="op">/</span>interpreter.c<span class="op">:</span><span class="fl">123</span>  do_call</span>
+<span id="cb39-53"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎     <span class="fl">5</span>    <span class="pp">@juliasrc</span><span class="op">/</span>julia.h<span class="op">:</span><span class="fl">2391</span>  jl_apply</span>
+<span id="cb39-54"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎ <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">265</span>  <span class="fu">mul!</span>(C<span class="op">::</span><span class="dt">Matrix{Float64}</span>, A<span class="op">::</span><span class="dt">Matrix{Float64}</span>, B<span class="op">::</span><span class="dt">Matrix{Float64}</span>)</span>
+<span id="cb39-55"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎  <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">297</span>  mul!</span>
+<span id="cb39-56"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎   <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">328</span>  _mul!</span>
+<span id="cb39-57"><a href="" aria-hidden="true" tabindex="-1"></a>   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    <span class="fl">5</span>    <span class="pp">@LinearAlgebra</span><span class="op">/</span>src<span class="op">/</span>matmul.jl<span class="op">:</span><span class="fl">507</span>  <span class="fu">generic_matmatmul_wrapper!</span>(C<span class="op">::</span><span class="dt">Matrix{Float64}</span>, tA<span class="op">::</span><span class="dt">Char</span>, tB<span class="op">::</span><span class="dt">Char</span>, A<span class="op">::</span><span class="dt">Matrix{Float64}</span>, B<span class="op">::</span><span class="dt">Matrix{Float64}</span>, α<span class="op">::</span><span class="dt">Bool</span>, β<span class="op">::</span><span class="dt">Bool</span>, val<span class="op">::</span><span class="dt">Val{LinearAlgebra.BlasF…</span></span>
+<span id="cb39-58"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎     5    @LinearAlgebra/src/matmul.jl:527  _syrk_herk_gemm_wrapper!</span></span>
+<span id="cb39-59"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎ 5    @LinearAlgebra/src/matmul.jl:808  gemm_wrapper!</span></span>
+<span id="cb39-60"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎  5    @LinearAlgebra/src/blas.jl:1648  gemm!(transA::Char, transB::Char, alpha::Float64, A::Matrix{Float64}, B::Matrix{Float64}, beta::Float64, C::Matrix{Float64})</span></span>
+<span id="cb39-61"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎   5    @julialib/julia/libopenblas64_.so:?  dgemm_64_</span></span>
+<span id="cb39-62"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    5    @julialib/julia/libopenblas64_.so:?  dgemm_thread_nn</span></span>
+<span id="cb39-63"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎     5    @julialib/julia/libopenblas64_.so:?  gemm_driver.isra.0</span></span>
+<span id="cb39-64"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎ 5    @julialib/julia/libopenblas64_.so:?  exec_blas</span></span>
+<span id="cb39-65"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎  5    @julialib/julia/libopenblas64_.so:?  inner_thread</span></span>
+<span id="cb39-66"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎   1    @julialib/julia/libopenblas64_.so:?  dgemm_beta_HASWELL</span></span>
+<span id="cb39-67"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    1    @julialib/julia/libopenblas64_.so:?</span></span>
+<span id="cb39-68"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">  3╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎   3    @julialib/julia/libopenblas64_.so:?  dgemm_itcopy_HASWELL</span></span>
+<span id="cb39-69"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">  1╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎    ╎   1    @julialib/julia/libopenblas64_.so:?  dgemm_oncopy_HASWELL</span></span>
+<span id="cb39-70"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎ 1    @juliasrc/interpreter.c:707  eval_body</span></span>
+<span id="cb39-71"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎  1    @juliasrc/interpreter.c:194  eval_stmt_value</span></span>
+<span id="cb39-72"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎   1    @juliasrc/interpreter.c:243  eval_value</span></span>
+<span id="cb39-73"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">   ╎    ╎    ╎    ╎    ╎    ╎    ╎    1    @juliasrc/interpreter.c:122  do_call</span></span>
+<span id="cb39-74"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">  1╎    ╎    ╎    ╎    ╎    ╎    ╎     1    @juliasrc/interpreter.c:201  eval_value</span></span>
+<span id="cb39-75"><a href="" aria-hidden="true" tabindex="-1"></a><span class="dt">Total snapshots: 1182. Utilization: 50% across all threads and tasks. Use the `groupby` kwarg to break down by thread and/or task.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section class="slide level2 scrollable">
 <h2>Using external profilers</h2>
@@ -552,13 +633,13 @@ Mosè Giordano
 </section>
 <section class="slide level2 scrollable">
 <h2>LLVM IR</h2>
-<div id="28" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@code_llvm</span> <span class="fu">add</span>(<span class="fl">1</span>, <span class="fl">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="38" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb40-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@code_llvm</span> <span class="fu">add</span>(<span class="fl">1</span>, <span class="fl">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span class="ansi-bright-black-fg">; Function Signature: add(Int64, Int64)</span>
 <span class="ansi-bright-black-fg">;  @ /home/runner/work/julia-hpc-tutorial-sc25/julia-hpc-tutorial-sc25/presentations/intro-julia/index.qmd:35 within `add`</span>
-<span class="ansi-bright-magenta-fg">define</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-bright-yellow-fg">@julia_add_11509</span><span class="ansi-yellow-fg">(</span><span class="ansi-cyan-fg">i64</span> <span class="ansi-bright-magenta-fg">signext</span> %"x::Int64", <span class="ansi-cyan-fg">i64</span> <span class="ansi-bright-magenta-fg">signext</span> %"y::Int64"<span class="ansi-yellow-fg">)</span> #0 <span class="ansi-yellow-fg">{</span>
+<span class="ansi-bright-magenta-fg">define</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-bright-yellow-fg">@julia_add_12075</span><span class="ansi-yellow-fg">(</span><span class="ansi-cyan-fg">i64</span> <span class="ansi-bright-magenta-fg">signext</span> %"x::Int64", <span class="ansi-cyan-fg">i64</span> <span class="ansi-bright-magenta-fg">signext</span> %"y::Int64"<span class="ansi-yellow-fg">)</span> #0 <span class="ansi-yellow-fg">{</span>
 <span class="ansi-bright-red-fg">top:</span>
 <span class="ansi-bright-black-fg">; ┌ @ int.jl:87 within `+`</span>
    %0 = <span class="ansi-bright-cyan-fg ansi-bold">add</span> <span class="ansi-cyan-fg">i64</span> %"y::Int64", %"x::Int64"
@@ -569,13 +650,13 @@ Mosè Giordano
 </div>
 </div>
 </div>
-<div id="30" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb31-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@code_llvm</span> <span class="fu">add</span>(<span class="fl">1.0</span>, <span class="fl">2.0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="40" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@code_llvm</span> <span class="fu">add</span>(<span class="fl">1.0</span>, <span class="fl">2.0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span class="ansi-bright-black-fg">; Function Signature: add(Float64, Float64)</span>
 <span class="ansi-bright-black-fg">;  @ /home/runner/work/julia-hpc-tutorial-sc25/julia-hpc-tutorial-sc25/presentations/intro-julia/index.qmd:35 within `add`</span>
-<span class="ansi-bright-magenta-fg">define</span> <span class="ansi-cyan-fg">double</span> <span class="ansi-bright-yellow-fg">@julia_add_11567</span><span class="ansi-yellow-fg">(</span><span class="ansi-cyan-fg">double</span> %"x::Float64", <span class="ansi-cyan-fg">double</span> %"y::Float64"<span class="ansi-yellow-fg">)</span> #0 <span class="ansi-yellow-fg">{</span>
+<span class="ansi-bright-magenta-fg">define</span> <span class="ansi-cyan-fg">double</span> <span class="ansi-bright-yellow-fg">@julia_add_12170</span><span class="ansi-yellow-fg">(</span><span class="ansi-cyan-fg">double</span> %"x::Float64", <span class="ansi-cyan-fg">double</span> %"y::Float64"<span class="ansi-yellow-fg">)</span> #0 <span class="ansi-yellow-fg">{</span>
 <span class="ansi-bright-red-fg">top:</span>
 <span class="ansi-bright-black-fg">; ┌ @ float.jl:495 within `+`</span>
    %0 = <span class="ansi-bright-cyan-fg ansi-bold">fadd</span> <span class="ansi-cyan-fg">double</span> %"x::Float64", %"y::Float64"
@@ -589,12 +670,12 @@ Mosè Giordano
 </section>
 <section class="slide level2 scrollable">
 <h2>LLVM IR (cont.)</h2>
-<div id="32" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">code_llvm</span>(axpy!, (<span class="dt">Vector</span>{<span class="dt">Float32</span>}, <span class="dt">Float32</span>, <span class="dt">Vector</span>{<span class="dt">Float32</span>}); debuginfo<span class="op">=:</span>none)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="42" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb42-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">code_llvm</span>(axpy!, (<span class="dt">Vector</span>{<span class="dt">Float32</span>}, <span class="dt">Float32</span>, <span class="dt">Vector</span>{<span class="dt">Float32</span>}); debuginfo<span class="op">=:</span>none)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span class="ansi-bright-black-fg">; Function Signature: axpy!(Array{Float32, 1}, Float32, Array{Float32, 1})</span>
-<span class="ansi-bright-magenta-fg">define</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@"julia_axpy!_11582"</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-magenta-fg">noundef</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">24</span><span class="ansi-yellow-fg">)</span> %"y::Array", <span class="ansi-cyan-fg">float</span> %"a::Float32", <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-magenta-fg">noundef</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">24</span><span class="ansi-yellow-fg">)</span> %"x::Array"<span class="ansi-yellow-fg">)</span> #0 <span class="ansi-yellow-fg">{</span>
+<span class="ansi-bright-magenta-fg">define</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@"julia_axpy!_12185"</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-magenta-fg">noundef</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">24</span><span class="ansi-yellow-fg">)</span> %"y::Array", <span class="ansi-cyan-fg">float</span> %"a::Float32", <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-magenta-fg">noundef</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">24</span><span class="ansi-yellow-fg">)</span> %"x::Array"<span class="ansi-yellow-fg">)</span> #0 <span class="ansi-yellow-fg">{</span>
 <span class="ansi-bright-red-fg">top:</span>
   %jlcallframe1 = <span class="ansi-bright-cyan-fg ansi-bold">alloca</span> <span class="ansi-yellow-fg">[</span><span class="ansi-yellow-fg">3</span> x <span class="ansi-bright-magenta-fg">ptr</span><span class="ansi-yellow-fg">]</span>, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %gcframe2 = <span class="ansi-bright-cyan-fg ansi-bold">alloca</span> <span class="ansi-yellow-fg">[</span><span class="ansi-yellow-fg">4</span> x <span class="ansi-bright-magenta-fg">ptr</span><span class="ansi-yellow-fg">]</span>, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">16</span>
@@ -617,25 +698,25 @@ Mosè Giordano
 <span class="ansi-bright-red-fg">L11:</span>                                              <span class="ansi-bright-black-fg">; preds = %top</span>
   %ptls_field = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-cyan-fg">i8</span>, <span class="ansi-bright-magenta-fg">ptr</span> %tls_pgcstack, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">16</span>
   %ptls_load = <span class="ansi-bright-cyan-fg ansi-bold">load</span> <span class="ansi-bright-magenta-fg">ptr</span>, <span class="ansi-bright-magenta-fg">ptr</span> %ptls_field, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
-  %"box::OneTo" = <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-bright-magenta-fg">noalias</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">)</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@ijl_gc_small_alloc</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> %ptls_load, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">360</span>, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">16</span>, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140297561021088</span><span class="ansi-yellow-fg">)</span> #9
+  %"box::OneTo" = <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-bright-magenta-fg">noalias</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">)</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@ijl_gc_small_alloc</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> %ptls_load, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">360</span>, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">16</span>, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140693515901600</span><span class="ansi-yellow-fg">)</span> #9
   %"box::OneTo.tag_addr" = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-cyan-fg">i64</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo", <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">-1</span>
-  <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">atomic</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140297561021088</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo.tag_addr" <span class="ansi-bright-magenta-fg">unordered</span>, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
+  <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">atomic</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140693515901600</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo.tag_addr" <span class="ansi-bright-magenta-fg">unordered</span>, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-cyan-fg">i64</span> %"x::Array.size.0.copyload", <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo", <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %gc_slot_addr_1 = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-bright-magenta-fg">ptr</span>, <span class="ansi-bright-magenta-fg">ptr</span> %gcframe2, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">3</span>
   <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo", <span class="ansi-bright-magenta-fg">ptr</span> %gc_slot_addr_1, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %ptls_load91 = <span class="ansi-bright-cyan-fg ansi-bold">load</span> <span class="ansi-bright-magenta-fg">ptr</span>, <span class="ansi-bright-magenta-fg">ptr</span> %ptls_field, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
-  %"box::OneTo50" = <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-bright-magenta-fg">noalias</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">)</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@ijl_gc_small_alloc</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> %ptls_load91, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">360</span>, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">16</span>, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140297561021088</span><span class="ansi-yellow-fg">)</span> #9
+  %"box::OneTo50" = <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-bright-magenta-fg">noalias</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">)</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@ijl_gc_small_alloc</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> %ptls_load91, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">360</span>, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">16</span>, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140693515901600</span><span class="ansi-yellow-fg">)</span> #9
   %"box::OneTo50.tag_addr" = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-cyan-fg">i64</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo50", <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">-1</span>
-  <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">atomic</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140297561021088</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo50.tag_addr" <span class="ansi-bright-magenta-fg">unordered</span>, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
+  <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">atomic</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140693515901600</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo50.tag_addr" <span class="ansi-bright-magenta-fg">unordered</span>, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-cyan-fg">i64</span> %"y::Array.size.0.copyload", <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo50", <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %gc_slot_addr_0 = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-bright-magenta-fg">ptr</span>, <span class="ansi-bright-magenta-fg">ptr</span> %gcframe2, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">2</span>
   <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo50", <span class="ansi-bright-magenta-fg">ptr</span> %gc_slot_addr_0, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
-  <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@"jl_global#11587.jit"</span>, <span class="ansi-bright-magenta-fg">ptr</span> %jlcallframe1, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
+  <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@"jl_global#12190.jit"</span>, <span class="ansi-bright-magenta-fg">ptr</span> %jlcallframe1, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %0 = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-bright-magenta-fg">ptr</span>, <span class="ansi-bright-magenta-fg">ptr</span> %jlcallframe1, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">1</span>
   <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo", <span class="ansi-bright-magenta-fg">ptr</span> %0, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %1 = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-bright-magenta-fg">ptr</span>, <span class="ansi-bright-magenta-fg">ptr</span> %jlcallframe1, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">2</span>
   <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo50", <span class="ansi-bright-magenta-fg">ptr</span> %1, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
-  %2 = <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@j1_throw_eachindex_mismatch_indices_11585</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-yellow-fg">@"jl_global#11586.jit"</span>, <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-magenta-fg">nonnull</span> %jlcallframe1, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">3</span><span class="ansi-yellow-fg">)</span>
+  %2 = <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@j1_throw_eachindex_mismatch_indices_12188</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-yellow-fg">@"jl_global#12189.jit"</span>, <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-magenta-fg">nonnull</span> %jlcallframe1, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">3</span><span class="ansi-yellow-fg">)</span>
   <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-cyan-fg">void</span> <span class="ansi-bright-yellow-fg">@llvm.trap</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">)</span>
   <span class="ansi-bright-cyan-fg ansi-bold">unreachable</span>
 
@@ -746,17 +827,17 @@ Mosè Giordano
 </section>
 <section class="slide level2 scrollable">
 <h2>Native code</h2>
-<div id="34" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb33-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@code_native</span> <span class="fu">add</span>(<span class="fl">1</span>, <span class="fl">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="44" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@code_native</span> <span class="fu">add</span>(<span class="fl">1</span>, <span class="fl">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre>   .text
     .file   "add"
     .section    .ltext,"axl",@progbits
-    .globl  julia_add_11640                 <span class="ansi-bright-black-fg"># -- Begin function julia_add_11640</span>
+    .globl  julia_add_12243                 <span class="ansi-bright-black-fg"># -- Begin function julia_add_12243</span>
     .p2align    <span class="ansi-yellow-fg">4</span>, <span class="ansi-yellow-fg">0x90</span>
-    .type   julia_add_11640,@function
-<span class="ansi-bright-red-fg">julia_add_11640:</span>                        <span class="ansi-bright-black-fg"># @julia_add_11640</span>
+    .type   julia_add_12243,@function
+<span class="ansi-bright-red-fg">julia_add_12243:</span>                        <span class="ansi-bright-black-fg"># @julia_add_12243</span>
 <span class="ansi-bright-black-fg">; Function Signature: add(Int64, Int64)</span>
 <span class="ansi-bright-black-fg">; ┌ @ /home/runner/work/julia-hpc-tutorial-sc25/julia-hpc-tutorial-sc25/presentations/intro-julia/index.qmd:35 within `add`</span>
 <span class="ansi-bright-black-fg"># %bb.0:                                # %top</span>
@@ -769,7 +850,7 @@ Mosè Giordano
     <span class="ansi-bright-cyan-fg ansi-bold">pop</span>  rbp
     <span class="ansi-bright-cyan-fg ansi-bold">ret</span>
 <span class="ansi-bright-red-fg">.Lfunc_end0:</span>
-    .size   julia_add_11640, .Lfunc_end0-julia_add_11640
+    .size   julia_add_12243, .Lfunc_end0-julia_add_12243
 <span class="ansi-bright-black-fg">; └└</span>
                                         <span class="ansi-bright-black-fg"># -- End function</span>
     .section    ".note.GNU-stack","",@progbits
@@ -777,17 +858,17 @@ Mosè Giordano
 </div>
 </div>
 </div>
-<div id="36" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb34-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@code_native</span> <span class="fu">add</span>(<span class="fl">1.0</span>, <span class="fl">2.0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="46" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb44-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@code_native</span> <span class="fu">add</span>(<span class="fl">1.0</span>, <span class="fl">2.0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre>   .text
     .file   "add"
     .section    .ltext,"axl",@progbits
-    .globl  julia_add_11694                 <span class="ansi-bright-black-fg"># -- Begin function julia_add_11694</span>
+    .globl  julia_add_12297                 <span class="ansi-bright-black-fg"># -- Begin function julia_add_12297</span>
     .p2align    <span class="ansi-yellow-fg">4</span>, <span class="ansi-yellow-fg">0x90</span>
-    .type   julia_add_11694,@function
-<span class="ansi-bright-red-fg">julia_add_11694:</span>                        <span class="ansi-bright-black-fg"># @julia_add_11694</span>
+    .type   julia_add_12297,@function
+<span class="ansi-bright-red-fg">julia_add_12297:</span>                        <span class="ansi-bright-black-fg"># @julia_add_12297</span>
 <span class="ansi-bright-black-fg">; Function Signature: add(Float64, Float64)</span>
 <span class="ansi-bright-black-fg">; ┌ @ /home/runner/work/julia-hpc-tutorial-sc25/julia-hpc-tutorial-sc25/presentations/intro-julia/index.qmd:35 within `add`</span>
 <span class="ansi-bright-black-fg"># %bb.0:                                # %top</span>
@@ -800,18 +881,18 @@ Mosè Giordano
     <span class="ansi-bright-cyan-fg ansi-bold">pop</span>  rbp
     <span class="ansi-bright-cyan-fg ansi-bold">ret</span>
 <span class="ansi-bright-red-fg">.Lfunc_end0:</span>
-    .size   julia_add_11694, .Lfunc_end0-julia_add_11694
+    .size   julia_add_12297, .Lfunc_end0-julia_add_12297
 <span class="ansi-bright-black-fg">; └└</span>
                                         <span class="ansi-bright-black-fg"># -- End function</span>
-    .type   ".L+Core.Float64#11696",@object <span class="ansi-bright-black-fg"># @"+Core.Float64#11696"</span>
+    .type   ".L+Core.Float64#12299",@object <span class="ansi-bright-black-fg"># @"+Core.Float64#12299"</span>
     .section    .lrodata,"al",@progbits
     .p2align    <span class="ansi-yellow-fg">3</span>, <span class="ansi-yellow-fg">0x0</span>
-<span class="ansi-bright-red-fg">".L+Core.Float64#11696":</span>
-    .quad   ".L+Core.Float64#11696.jit"
-    .size   ".L+Core.Float64#11696", <span class="ansi-yellow-fg">8</span>
+<span class="ansi-bright-red-fg">".L+Core.Float64#12299":</span>
+    .quad   ".L+Core.Float64#12299.jit"
+    .size   ".L+Core.Float64#12299", <span class="ansi-yellow-fg">8</span>
 
-.set ".L+Core.Float64#11696.jit", <span class="ansi-yellow-fg">140297589393088</span>
-    .size   ".L+Core.Float64#11696.jit", <span class="ansi-yellow-fg">8</span>
+.set ".L+Core.Float64#12299.jit", <span class="ansi-yellow-fg">140693544273600</span>
+    .size   ".L+Core.Float64#12299.jit", <span class="ansi-yellow-fg">8</span>
     .section    ".note.GNU-stack","",@progbits
 </pre>
 </div>
@@ -820,17 +901,17 @@ Mosè Giordano
 </section>
 <section class="slide level2 scrollable">
 <h2>Native code (cont.)</h2>
-<div id="38" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb35-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">code_native</span>(axpy!, (<span class="dt">Vector</span>{<span class="dt">Float32</span>}, <span class="dt">Float32</span>, <span class="dt">Vector</span>{<span class="dt">Float32</span>}); debuginfo<span class="op">=:</span>none)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="48" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb45-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">code_native</span>(axpy!, (<span class="dt">Vector</span>{<span class="dt">Float32</span>}, <span class="dt">Float32</span>, <span class="dt">Vector</span>{<span class="dt">Float32</span>}); debuginfo<span class="op">=:</span>none)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre>   .text
     .file   "axpy!"
     .section    .ltext,"axl",@progbits
-    .globl  "julia_axpy!_11704"             <span class="ansi-bright-black-fg"># -- Begin function julia_axpy!_11704</span>
+    .globl  "julia_axpy!_12307"             <span class="ansi-bright-black-fg"># -- Begin function julia_axpy!_12307</span>
     .p2align    <span class="ansi-yellow-fg">4</span>, <span class="ansi-yellow-fg">0x90</span>
-    .type   "julia_axpy!_11704",@function
-<span class="ansi-bright-red-fg">"julia_axpy!_11704":</span>                    <span class="ansi-bright-black-fg"># @"julia_axpy!_11704"</span>
+    .type   "julia_axpy!_12307",@function
+<span class="ansi-bright-red-fg">"julia_axpy!_12307":</span>                    <span class="ansi-bright-black-fg"># @"julia_axpy!_12307"</span>
 <span class="ansi-bright-black-fg">; Function Signature: axpy!(Array{Float32, 1}, Float32, Array{Float32, 1})</span>
 <span class="ansi-bright-black-fg"># %bb.0:                                # %top</span>
     <span class="ansi-bright-red-fg">#DEBUG_VALUE:</span> <span class="ansi-bright-cyan-fg ansi-bold">axpy</span>!:y &lt;- <span class="ansi-yellow-fg">[</span><span class="ansi-bright-yellow-fg">$rdi+0</span><span class="ansi-yellow-fg">]</span>
@@ -849,12 +930,12 @@ Mosè Giordano
     #APP
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  rax, <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> fs:<span class="ansi-yellow-fg">[</span><span class="ansi-yellow-fg">0</span><span class="ansi-yellow-fg">]</span>
     #NO_APP
-    <span class="ansi-bright-cyan-fg ansi-bold">lea</span>  rcx, <span class="ansi-yellow-fg">[</span>rbp - <span class="ansi-yellow-fg">80</span><span class="ansi-yellow-fg">]</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  r15, <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rax - <span class="ansi-yellow-fg">8</span><span class="ansi-yellow-fg">]</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rbp - <span class="ansi-yellow-fg">80</span><span class="ansi-yellow-fg">]</span>, <span class="ansi-yellow-fg">8</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  rax, <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>r15<span class="ansi-yellow-fg">]</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rbp - <span class="ansi-yellow-fg">72</span><span class="ansi-yellow-fg">]</span>, rax
-    <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>r15<span class="ansi-yellow-fg">]</span>, rcx
+    <span class="ansi-bright-cyan-fg ansi-bold">lea</span>  rax, <span class="ansi-yellow-fg">[</span>rbp - <span class="ansi-yellow-fg">80</span><span class="ansi-yellow-fg">]</span>
+    <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>r15<span class="ansi-yellow-fg">]</span>, rax
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  r12, <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rsi + <span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">]</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  r13, <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rdi + <span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">]</span>
     <span class="ansi-bright-cyan-fg ansi-bold">cmp</span>  r12, r13
@@ -910,10 +991,10 @@ Mosè Giordano
     <span class="ansi-bright-cyan-fg ansi-bold">jb</span>   .LBB0_10
 <span class="ansi-bright-red-fg">.LBB0_7:</span>                                <span class="ansi-bright-black-fg"># %vector.ph</span>
     <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rsi, <span class="ansi-yellow-fg">9223372036854775776</span>
-    <span class="ansi-bright-cyan-fg ansi-bold">vbroadcastss</span> ymm1, xmm0
-    <span class="ansi-bright-cyan-fg ansi-bold">xor</span>  r8d, r8d
     <span class="ansi-bright-cyan-fg ansi-bold">and</span>  rsi, r12
     <span class="ansi-bright-cyan-fg ansi-bold">lea</span>  rdx, <span class="ansi-yellow-fg">[</span>rsi + <span class="ansi-yellow-fg">1</span><span class="ansi-yellow-fg">]</span>
+    <span class="ansi-bright-cyan-fg ansi-bold">vbroadcastss</span> ymm1, xmm0
+    <span class="ansi-bright-cyan-fg ansi-bold">xor</span>  r8d, r8d
     .p2align    <span class="ansi-yellow-fg">4</span>, <span class="ansi-yellow-fg">0x90</span>
 <span class="ansi-bright-red-fg">.LBB0_8:</span>                                <span class="ansi-bright-black-fg"># %vector.body</span>
                                         <span class="ansi-bright-black-fg"># =&gt;This Inner Loop Header: Depth=1</span>
@@ -938,45 +1019,45 @@ Mosè Giordano
     <span class="ansi-bright-cyan-fg ansi-bold">jmp</span>  .LBB0_10
 <span class="ansi-bright-red-fg">.LBB0_13:</span>                               <span class="ansi-bright-black-fg"># %L11</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  rdi, <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>r15 + <span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">]</span>
-    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rbx, <span class="ansi-yellow-fg">140297561021088</span>
     <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   r14, <span class="ansi-bright-magenta-fg">offset</span> <span class="ansi-bright-yellow-fg">ijl_gc_small_alloc</span>
+    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rbx, <span class="ansi-yellow-fg">140693515901600</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  esi, <span class="ansi-yellow-fg">360</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  edx, <span class="ansi-yellow-fg">16</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  rcx, rbx
     <span class="ansi-bright-cyan-fg ansi-bold">vzeroupper</span>
     <span class="ansi-bright-cyan-fg ansi-bold">call</span> r14
+    <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  r8, r14
+    <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  r14, rax
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rax - <span class="ansi-yellow-fg">8</span><span class="ansi-yellow-fg">]</span>, rbx
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rax<span class="ansi-yellow-fg">]</span>, r12
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rbp - <span class="ansi-yellow-fg">56</span><span class="ansi-yellow-fg">]</span>, rax
+    <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  rdi, <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>r15 + <span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">]</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  esi, <span class="ansi-yellow-fg">360</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  edx, <span class="ansi-yellow-fg">16</span>
-    <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  r8, r14
-    <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  r14, rax
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  rcx, rbx
-    <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  rdi, <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>r15 + <span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">]</span>
     <span class="ansi-bright-cyan-fg ansi-bold">call</span> r8
-    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rcx, <span class="ansi-bright-magenta-fg">offset</span> <span class="ansi-bright-yellow-fg">".Ljl_global#11709.jit"</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rax - <span class="ansi-yellow-fg">8</span><span class="ansi-yellow-fg">]</span>, rbx
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rax<span class="ansi-yellow-fg">]</span>, r13
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rbp - <span class="ansi-yellow-fg">64</span><span class="ansi-yellow-fg">]</span>, rax
-    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rdi, <span class="ansi-bright-magenta-fg">offset</span> <span class="ansi-bright-yellow-fg">".Ljl_global#11708.jit"</span>
-    <span class="ansi-bright-cyan-fg ansi-bold">lea</span>  rsi, <span class="ansi-yellow-fg">[</span>rbp - <span class="ansi-yellow-fg">104</span><span class="ansi-yellow-fg">]</span>
-    <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  edx, <span class="ansi-yellow-fg">3</span>
+    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rcx, <span class="ansi-bright-magenta-fg">offset</span> <span class="ansi-bright-yellow-fg">".Ljl_global#12312.jit"</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rbp - <span class="ansi-yellow-fg">104</span><span class="ansi-yellow-fg">]</span>, rcx
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rbp - <span class="ansi-yellow-fg">96</span><span class="ansi-yellow-fg">]</span>, r14
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rbp - <span class="ansi-yellow-fg">88</span><span class="ansi-yellow-fg">]</span>, rax
-    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rax, <span class="ansi-bright-magenta-fg">offset</span> <span class="ansi-bright-yellow-fg">j1_throw_eachindex_mismatch_indices_11707</span>
+    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rdi, <span class="ansi-bright-magenta-fg">offset</span> <span class="ansi-bright-yellow-fg">".Ljl_global#12311.jit"</span>
+    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rax, <span class="ansi-bright-magenta-fg">offset</span> <span class="ansi-bright-yellow-fg">j1_throw_eachindex_mismatch_indices_12310</span>
+    <span class="ansi-bright-cyan-fg ansi-bold">lea</span>  rsi, <span class="ansi-yellow-fg">[</span>rbp - <span class="ansi-yellow-fg">104</span><span class="ansi-yellow-fg">]</span>
+    <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  edx, <span class="ansi-yellow-fg">3</span>
     <span class="ansi-bright-cyan-fg ansi-bold">call</span> rax
     <span class="ansi-bright-cyan-fg ansi-bold">ud2</span>
 <span class="ansi-bright-red-fg">.Lfunc_end0:</span>
-    .size   "julia_axpy!_11704", .Lfunc_end0-"julia_axpy!_11704"
+    .size   "julia_axpy!_12307", .Lfunc_end0-"julia_axpy!_12307"
                                         <span class="ansi-bright-black-fg"># -- End function</span>
-.set ".Ljl_global#11709.jit", <span class="ansi-yellow-fg">140297510633856</span>
-    .size   ".Ljl_global#11709.jit", <span class="ansi-yellow-fg">8</span>
-.set ".L+Main.Base.OneTo#11710.jit", <span class="ansi-yellow-fg">140297561021088</span>
-    .size   ".L+Main.Base.OneTo#11710.jit", <span class="ansi-yellow-fg">8</span>
-.set ".Ljl_global#11708.jit", <span class="ansi-yellow-fg">140297582965552</span>
-    .size   ".Ljl_global#11708.jit", <span class="ansi-yellow-fg">8</span>
+.set ".Ljl_global#12312.jit", <span class="ansi-yellow-fg">140693465514368</span>
+    .size   ".Ljl_global#12312.jit", <span class="ansi-yellow-fg">8</span>
+.set ".L+Main.Base.OneTo#12313.jit", <span class="ansi-yellow-fg">140693515901600</span>
+    .size   ".L+Main.Base.OneTo#12313.jit", <span class="ansi-yellow-fg">8</span>
+.set ".Ljl_global#12311.jit", <span class="ansi-yellow-fg">140693537846064</span>
+    .size   ".Ljl_global#12311.jit", <span class="ansi-yellow-fg">8</span>
     .section    ".note.GNU-stack","",@progbits
 </pre>
 </div>
@@ -990,6 +1071,7 @@ Mosè Giordano
 <li>avoid accessing (untyped) global variables: <strong>put code in functions</strong>, don’t work in global scope</li>
 <li>Julia has a garbage collector (GC) for safe automatic memory management, but in some cases it can get in the way of performance: do fully <strong>in-place operations in hot loops</strong> to avoid the GC to kick in and achieve best performance</li>
 <li>the compiler may not always be able to prove array indexing operations are in bounds: you may want to use <a href="https://docs.julialang.org/en/v1/base/base/#Base.@inbounds"><code>@inbounds</code></a> to forcibly disable bounds checking (use with caution!). Double check this is actually necessary with <a href="https://docs.julialang.org/en/v1/stdlib/InteractiveUtils/#InteractiveUtils.@code_llvm"><code>@code_llvm</code></a>, and use generic abstracts (like <a href="https://docs.julialang.org/en/v1/base/arrays/#Base.eachindex"><code>eachindex</code></a>) whenever possible</li>
+<li>slicing an array makes a copy, if you want to take a view instead use <a href="https://docs.julialang.org/en/v1/base/arrays/#Base.@view"><code>@view</code></a></li>
 <li><a href="https://docs.julialang.org/en/v1/manual/performance-tips/#Write-%22type-stable%22-functions">avoid type-instabilities</a></li>
 </ul>
 </section></section>
@@ -1000,18 +1082,18 @@ Mosè Giordano
 </section>
 <section class="slide level2">
 <h2>Task-based parallelism</h2>
-<div id="40" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb36-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Base.Threads</span></span>
-<span id="cb36-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> t <span class="op">=</span> <span class="pp">@spawn</span> <span class="cf">begin</span> <span class="co"># `@spawn` returns right away</span></span>
-<span id="cb36-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sleep</span>(<span class="fl">2</span>)</span>
-<span id="cb36-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fl">3</span> <span class="op">+</span> <span class="fl">3</span></span>
-<span id="cb36-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
-<span id="cb36-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> <span class="fu">fetch</span>(t) <span class="co"># `fetch` waits for the task to finish</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="50" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb46-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Base.Threads</span></span>
+<span id="cb46-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> t <span class="op">=</span> <span class="pp">@spawn</span> <span class="cf">begin</span> <span class="co"># `@spawn` returns right away</span></span>
+<span id="cb46-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sleep</span>(<span class="fl">2</span>)</span>
+<span id="cb46-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fl">3</span> <span class="op">+</span> <span class="fl">3</span></span>
+<span id="cb46-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb46-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> <span class="fu">fetch</span>(t) <span class="co"># `fetch` waits for the task to finish</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  0.000144 seconds (74 allocations: 3.844 KiB)
-  1.967829 seconds (17.68 k allocations: 899.203 KiB, 1.84% compilation time: 100% of which was recompilation)</code></pre>
+<pre><code>  0.000109 seconds (74 allocations: 3.844 KiB)
+  1.972135 seconds (10 allocations: 544 bytes)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>6</code></pre>
@@ -1020,51 +1102,51 @@ Mosè Giordano
 </section>
 <section class="slide level2 scrollable">
 <h2>Task-based parallelism (cont.)</h2>
-<div id="42" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb39-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span>, <span class="bu">BenchmarkTools</span>, <span class="bu">Base.Threads</span></span>
-<span id="cb39-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> <span class="fu">nthreads</span>()</span>
-<span id="cb39-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-5"><a href="" aria-hidden="true" tabindex="-1"></a>BLAS.<span class="fu">set_num_threads</span>(<span class="fl">1</span>) <span class="co"># Fix number of BLAS threads</span></span>
-<span id="cb39-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">tmap</span>(fn, itr)</span>
-<span id="cb39-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for each i ∈ itr, spawn a task to compute fn(i)</span></span>
-<span id="cb39-9"><a href="" aria-hidden="true" tabindex="-1"></a>    tasks <span class="op">=</span> <span class="fu">map</span>(i <span class="op">-&gt;</span> <span class="pp">@spawn</span>(<span class="fu">fn</span>(i)), itr)</span>
-<span id="cb39-10"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># fetch and return all the results</span></span>
-<span id="cb39-11"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">fetch</span>.(tasks)</span>
-<span id="cb39-12"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb39-13"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-14"><a href="" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> [<span class="fu">rand</span>(<span class="fl">100</span>,<span class="fl">100</span>) for i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>(<span class="fl">8</span> <span class="op">*</span> <span class="fu">nthreads</span>())];</span>
-<span id="cb39-15"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-16"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@btime</span>  <span class="fu">map</span>(svdvals, <span class="op">$</span>M) samples<span class="op">=</span><span class="fl">10</span> evals<span class="op">=</span><span class="fl">3</span>;</span>
-<span id="cb39-17"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">tmap</span>(svdvals, <span class="op">$</span>M) samples<span class="op">=</span><span class="fl">10</span> evals<span class="op">=</span><span class="fl">3</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="52" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb49-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span>, <span class="bu">BenchmarkTools</span>, <span class="bu">Base.Threads</span></span>
+<span id="cb49-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> <span class="fu">nthreads</span>()</span>
+<span id="cb49-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-5"><a href="" aria-hidden="true" tabindex="-1"></a>BLAS.<span class="fu">set_num_threads</span>(<span class="fl">1</span>) <span class="co"># Fix number of BLAS threads</span></span>
+<span id="cb49-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">tmap</span>(fn, itr)</span>
+<span id="cb49-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for each i ∈ itr, spawn a task to compute fn(i)</span></span>
+<span id="cb49-9"><a href="" aria-hidden="true" tabindex="-1"></a>    tasks <span class="op">=</span> <span class="fu">map</span>(i <span class="op">-&gt;</span> <span class="pp">@spawn</span>(<span class="fu">fn</span>(i)), itr)</span>
+<span id="cb49-10"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># fetch and return all the results</span></span>
+<span id="cb49-11"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">fetch</span>.(tasks)</span>
+<span id="cb49-12"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb49-13"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-14"><a href="" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> [<span class="fu">rand</span>(<span class="fl">100</span>,<span class="fl">100</span>) for i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>(<span class="fl">8</span> <span class="op">*</span> <span class="fu">nthreads</span>())];</span>
+<span id="cb49-15"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-16"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@btime</span>  <span class="fu">map</span>(svdvals, <span class="op">$</span>M) samples<span class="op">=</span><span class="fl">10</span> evals<span class="op">=</span><span class="fl">3</span>;</span>
+<span id="cb49-17"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">tmap</span>(svdvals, <span class="op">$</span>M) samples<span class="op">=</span><span class="fl">10</span> evals<span class="op">=</span><span class="fl">3</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>nthreads() = 4
-  16.430 ms (418 allocations: 4.31 MiB)
-  6.949 ms (587 allocations: 4.32 MiB)</code></pre>
+  19.074 ms (418 allocations: 4.31 MiB)
+  8.179 ms (587 allocations: 4.32 MiB)</code></pre>
 </div>
 </div>
 </section>
 <section class="slide level2 scrollable">
 <h2>Multi-threaded <code>for</code> loops</h2>
-<div id="44" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb41-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ChunkSplitters</span>, <span class="bu">Base.Threads</span>, <span class="bu">BenchmarkTools</span></span>
-<span id="cb41-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">sum_threads</span>(fn, data; nchunks<span class="op">=</span><span class="fu">nthreads</span>())</span>
-<span id="cb41-4"><a href="" aria-hidden="true" tabindex="-1"></a>    psums <span class="op">=</span> <span class="fu">zeros</span>(<span class="fu">eltype</span>(data), nchunks)</span>
-<span id="cb41-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@threads</span> <span class="cf">for</span> (c, elements) <span class="kw">in</span> <span class="fu">enumerate</span>(<span class="fu">chunks</span>(data; n<span class="op">=</span>nchunks))</span>
-<span id="cb41-6"><a href="" aria-hidden="true" tabindex="-1"></a>        psums[c] <span class="op">=</span> <span class="fu">sum</span>(fn, elements)</span>
-<span id="cb41-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb41-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">sum</span>(psums)</span>
-<span id="cb41-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb41-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-11"><a href="" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> <span class="fu">randn</span>(<span class="fl">20_000_000</span>);</span>
-<span id="cb41-12"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-13"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">sum</span>(sin, <span class="op">$</span>v);</span>
-<span id="cb41-14"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">sum_threads</span>(sin, <span class="op">$</span>v);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="54" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb51-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ChunkSplitters</span>, <span class="bu">Base.Threads</span>, <span class="bu">BenchmarkTools</span></span>
+<span id="cb51-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">sum_threads</span>(fn, data; nchunks<span class="op">=</span><span class="fu">nthreads</span>())</span>
+<span id="cb51-4"><a href="" aria-hidden="true" tabindex="-1"></a>    psums <span class="op">=</span> <span class="fu">zeros</span>(<span class="fu">eltype</span>(data), nchunks)</span>
+<span id="cb51-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@threads</span> <span class="cf">for</span> (c, elements) <span class="kw">in</span> <span class="fu">enumerate</span>(<span class="fu">chunks</span>(data; n<span class="op">=</span>nchunks))</span>
+<span id="cb51-6"><a href="" aria-hidden="true" tabindex="-1"></a>        psums[c] <span class="op">=</span> <span class="fu">sum</span>(fn, elements)</span>
+<span id="cb51-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb51-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">sum</span>(psums)</span>
+<span id="cb51-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb51-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-11"><a href="" aria-hidden="true" tabindex="-1"></a>v <span class="op">=</span> <span class="fu">randn</span>(<span class="fl">20_000_000</span>);</span>
+<span id="cb51-12"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-13"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">sum</span>(sin, <span class="op">$</span>v);</span>
+<span id="cb51-14"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">sum_threads</span>(sin, <span class="op">$</span>v);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  257.651 ms (0 allocations: 0 bytes)
-  78.543 ms (27 allocations: 1.75 KiB)</code></pre>
+<pre><code>  218.612 ms (0 allocations: 0 bytes)
+  79.531 ms (27 allocations: 1.75 KiB)</code></pre>
 </div>
 </div>
 </section></section>
@@ -1075,17 +1157,17 @@ Mosè Giordano
 </section>
 <section class="slide level2">
 <h2>Testing</h2>
-<div id="46" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb43-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span>, <span class="bu">Random</span></span>
-<span id="cb43-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">"My tests"</span> <span class="cf">begin</span></span>
-<span id="cb43-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.2</span> <span class="op">≈</span> <span class="fl">0.3</span></span>
-<span id="cb43-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">sin</span>(<span class="fu">randn</span>()) <span class="op">^</span> <span class="fl">2</span> <span class="op">≤</span> <span class="fl">1</span></span>
-<span id="cb43-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Mark consistently failing tests as broken</span></span>
-<span id="cb43-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">exp</span>(<span class="fu">randn</span>()) <span class="op">&lt;</span> <span class="fl">0</span> broken<span class="op">=</span><span class="cn">true</span></span>
-<span id="cb43-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Skip flaky tests (they aren't run at all)</span></span>
-<span id="cb43-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">rand</span>() <span class="op">&lt;</span> <span class="fl">0.5</span> skip<span class="op">=</span><span class="cn">true</span></span>
-<span id="cb43-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="56" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb53-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span>, <span class="bu">Random</span></span>
+<span id="cb53-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">"My tests"</span> <span class="cf">begin</span></span>
+<span id="cb53-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.2</span> <span class="op">≈</span> <span class="fl">0.3</span></span>
+<span id="cb53-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">sin</span>(<span class="fu">randn</span>()) <span class="op">^</span> <span class="fl">2</span> <span class="op">≤</span> <span class="fl">1</span></span>
+<span id="cb53-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Mark consistently failing tests as broken</span></span>
+<span id="cb53-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">exp</span>(<span class="fu">randn</span>()) <span class="op">&lt;</span> <span class="fl">0</span> broken<span class="op">=</span><span class="cn">true</span></span>
+<span id="cb53-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Skip flaky tests (they aren't run at all)</span></span>
+<span id="cb53-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="pp">@test</span> <span class="fu">rand</span>() <span class="op">&lt;</span> <span class="fl">0.5</span> skip<span class="op">=</span><span class="cn">true</span></span>
+<span id="cb53-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span class="ansi-bold">Test Summary: | </span><span class="ansi-green-fg ansi-bold">Pass  </span><span class="ansi-yellow-fg ansi-bold">Broken  </span><span class="ansi-cyan-fg ansi-bold">Total  </span><span class="ansi-bold">Time</span>
