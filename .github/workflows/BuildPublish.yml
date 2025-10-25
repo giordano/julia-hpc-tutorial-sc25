@@ -83,10 +83,21 @@ jobs:
         using quarto_jll: quarto
         run(`$(quarto()) render index.qmd --to pdf`)
 
-    - uses: actions/upload-artifact@v4
+    - name: Upload PDF presentation
+      uses: actions/upload-artifact@v4
       with:
+        name: pdf-presentation
         path: |
           **/index.pdf
+        retention-days: 30
+
+    - name: Upload HTML presentation
+      uses: actions/upload-artifact@v4
+      with:
+        name: html-presentation
+        path: |
+          **/index.html
+          **/index_files
         retention-days: 30
 
     - name: Save Julia depot cache on cancel or failure
