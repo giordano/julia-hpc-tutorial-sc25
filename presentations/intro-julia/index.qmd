@@ -130,11 +130,52 @@ play(Rock(), Rock())
 play(Rock(), Paper())
 ```
 
-# Arrays and Linear Algebra
+# Arrays and <br> Linear Algebra
 
 ## Arrays
 
+Julia has built-in support for multi-dimensional tensors:
+
+```{julia}
+#| echo: true
+x = [1.0, 2.0, 3.0, 4.0];
+y = [5.0, 6.0, 7.0, 8.0];
+
+(x + y)'
+```
+
+```{julia}
+#| echo: true
+x[4]
+```
+
+```{julia}
+#| echo: true
+y[2:3]
+```
+
+::: {.callout-note}
+## Performance note
+
+Slicing makes a copy!
+:::
+
 ## Linear Algebra
+
+The [`LinearAlgebra`](https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/) stdlib exposes BLAS functionalities with a simple interface:
+
+```{julia}
+#| echo: true
+using LinearAlgebra
+
+A = [1.0 2.0; 3.0 4.0]; B = [5.0 6.0; 7.0 8.0];
+A * B
+```
+
+```{julia}
+#| echo: true
+qr(B)
+```
 
 ## Broadcasting
 
@@ -160,22 +201,26 @@ a .* b'
 
 ## The `@time` macro
 
-Julia comes with a simple macro `@time` for measuring elapsed time of sufficiently long-running functions:
+Julia comes with a simple macro [`@time`](https://docs.julialang.org/en/v1/base/base/#Base.@time) for measuring elapsed time of sufficiently long-running functions:
 
 ```{julia}
 #| echo: true
 @time sleep(0.1)
 ```
 
+::: {.callout-note}
+## Caveat
+
 This may not provide useful information for very quick functions (resolution is of the order of ~millisecond):
 
 ```{julia}
 #| echo: true
 using LinearAlgebra
-A = randn(100)
+A = randn(100);
 norm(A) # warm up
 @time norm(A)
 ```
+:::
 
 ## The `BenchmarkTools.jl` package
 
@@ -369,6 +414,7 @@ code_native(axpy!, (Vector{Float32}, Float32, Vector{Float32}); debuginfo=:none)
 * Julia has a garbage collector (GC) for safe automatic memory management, but in some cases it can get in the way of performance: do fully **in-place operations in hot loops** to avoid the GC to kick in and achieve best performance
 * the compiler may not always be able to prove array indexing operations are in bounds: you may want to use [`@inbounds`](https://docs.julialang.org/en/v1/base/base/#Base.@inbounds) to forcibly disable bounds checking (use with caution!).
   Double check this is actually necessary with [`@code_llvm`](https://docs.julialang.org/en/v1/stdlib/InteractiveUtils/#InteractiveUtils.@code_llvm), and use generic abstracts (like [`eachindex`](https://docs.julialang.org/en/v1/base/arrays/#Base.eachindex)) whenever possible
+* slicing an array makes a copy, if you want to take a view instead use [`@view`](https://docs.julialang.org/en/v1/base/arrays/#Base.@view)
 * [avoid type-instabilities](https://docs.julialang.org/en/v1/manual/performance-tips/#Write-%22type-stable%22-functions)
 
 # Shared-memory parallelism
