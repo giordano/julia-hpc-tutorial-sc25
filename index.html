@@ -377,7 +377,7 @@ Mosè Giordano
 <div id="22" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> <span class="fu">sleep</span>(<span class="fl">0.1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  0.101173 seconds (6 allocations: 224 bytes)</code></pre>
+<pre><code>  0.101199 seconds (6 allocations: 224 bytes)</code></pre>
 </div>
 </div>
 <p>This may not provide useful information for very quick functions (resolution is of the order of ~millisecond):</p>
@@ -387,10 +387,10 @@ Mosè Giordano
 <span id="cb24-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">norm</span>(A) <span class="co"># warm up</span></span>
 <span id="cb24-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> <span class="fu">norm</span>(A)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  0.000005 seconds (1 allocation: 16 bytes)</code></pre>
+<pre><code>  0.000009 seconds (1 allocation: 16 bytes)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>10.692612950136063</code></pre>
+<pre><code>9.876599681997511</code></pre>
 </div>
 </div>
 </section>
@@ -400,24 +400,16 @@ Mosè Giordano
 <div id="26" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb27-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">BenchmarkTools</span></span>
 <span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">norm</span>(A) setup<span class="op">=</span>(A <span class="op">=</span> <span class="fu">randn</span>(<span class="fl">100</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg ansi-bold">Precompiling</span> packages...
-   1052.3 ms<span class="ansi-green-fg">  ✓ </span>QuartoNotebookWorkerJSONExt<span class="ansi-bright-black-fg"> (serial)</span>
-  1 dependency successfully precompiled in 1 seconds
-</pre>
-</div>
-</div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div class="ansi-escaped-output">
 <pre>BenchmarkTools.Trial: 10000 samples with 977 evaluations per sample.
- Range <span class="ansi-bright-black-fg">(</span><span class="ansi-cyan-fg ansi-bold">min</span> … <span class="ansi-magenta-fg">max</span><span class="ansi-bright-black-fg">):  </span><span class="ansi-cyan-fg ansi-bold">67.003 ns</span> … <span class="ansi-magenta-fg">103.632 ns</span>  <span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>min … max<span class="ansi-bright-black-fg">): </span>0.00% … 0.00%
- Time  <span class="ansi-bright-black-fg">(</span><span class="ansi-blue-fg ansi-bold">median</span><span class="ansi-bright-black-fg">):     </span><span class="ansi-blue-fg ansi-bold">69.762 ns               </span><span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>median<span class="ansi-bright-black-fg">):    </span>0.00%
- Time  <span class="ansi-bright-black-fg">(</span><span class="ansi-green-fg ansi-bold">mean</span> ± <span class="ansi-green-fg">σ</span><span class="ansi-bright-black-fg">):   </span><span class="ansi-green-fg ansi-bold">70.101 ns</span> ± <span class="ansi-green-fg">  2.566 ns</span>  <span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>mean ± σ<span class="ansi-bright-black-fg">):  </span>0.00% ± 0.00%
+ Range <span class="ansi-bright-black-fg">(</span><span class="ansi-cyan-fg ansi-bold">min</span> … <span class="ansi-magenta-fg">max</span><span class="ansi-bright-black-fg">):  </span><span class="ansi-cyan-fg ansi-bold">67.475 ns</span> … <span class="ansi-magenta-fg">123.814 ns</span>  <span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>min … max<span class="ansi-bright-black-fg">): </span>0.00% … 0.00%
+ Time  <span class="ansi-bright-black-fg">(</span><span class="ansi-blue-fg ansi-bold">median</span><span class="ansi-bright-black-fg">):     </span><span class="ansi-blue-fg ansi-bold">69.772 ns               </span><span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>median<span class="ansi-bright-black-fg">):    </span>0.00%
+ Time  <span class="ansi-bright-black-fg">(</span><span class="ansi-green-fg ansi-bold">mean</span> ± <span class="ansi-green-fg">σ</span><span class="ansi-bright-black-fg">):   </span><span class="ansi-green-fg ansi-bold">70.166 ns</span> ± <span class="ansi-green-fg">  2.733 ns</span>  <span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>mean ± σ<span class="ansi-bright-black-fg">):  </span>0.00% ± 0.00%
 
-       ▅▄▄▄▅▅▄<span class="ansi-blue-fg">█</span> <span class="ansi-green-fg"> </span> ▁                        ▁▁▁▂▂               ▂
-  ▄▁▅▃▅███████<span class="ansi-blue-fg">█</span>█<span class="ansi-green-fg">▆</span>▆█▅▅▆▆▆▆▅▄▅▃▄▁▄▁▅▃▃▅▃▃▆▆▇███████▇▆▅▆▆▅▅▅▅▅▅▄▅ █
-  67 ns<span class="ansi-bright-black-fg">         </span><span class="ansi-bright-black-fg">Histogram: </span><span class="ansi-bright-black-fg ansi-bold">log(</span><span class="ansi-bright-black-fg">frequency</span><span class="ansi-bright-black-fg ansi-bold">)</span><span class="ansi-bright-black-fg"> by time</span>      80.3 ns <span class="ansi-bold">&lt;</span>
+     ▅▄▄▄▄▄<span class="ansi-blue-fg">█</span>▁<span class="ansi-green-fg"> </span>▃                        ▁▁▂▁▁                   ▂
+  ▆▄▆██████<span class="ansi-blue-fg">█</span>█<span class="ansi-green-fg">▇</span>█▇▅▆▅▇▇▅▄▁▃▄▆▄▁▁▃▃▃▃▅▇████████▇▆▅▄▄▅▅▄▄▅▅▄▄▁▁▃▃▄ █
+  67.5 ns<span class="ansi-bright-black-fg">       </span><span class="ansi-bright-black-fg">Histogram: </span><span class="ansi-bright-black-fg ansi-bold">log(</span><span class="ansi-bright-black-fg">frequency</span><span class="ansi-bright-black-fg ansi-bold">)</span><span class="ansi-bright-black-fg"> by time</span>      82.2 ns <span class="ansi-bold">&lt;</span>
 
  Memory estimate<span class="ansi-bright-black-fg">: </span><span class="ansi-yellow-fg">0 bytes</span>, allocs estimate<span class="ansi-bright-black-fg">: </span><span class="ansi-yellow-fg">0</span>.</pre>
 </div>
@@ -566,7 +558,7 @@ Mosè Giordano
 <div class="ansi-escaped-output">
 <pre><span class="ansi-bright-black-fg">; Function Signature: add(Int64, Int64)</span>
 <span class="ansi-bright-black-fg">;  @ /home/runner/work/julia-hpc-tutorial-sc25/julia-hpc-tutorial-sc25/presentations/intro-julia/index.qmd:35 within `add`</span>
-<span class="ansi-bright-magenta-fg">define</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-bright-yellow-fg">@julia_add_11597</span><span class="ansi-yellow-fg">(</span><span class="ansi-cyan-fg">i64</span> <span class="ansi-bright-magenta-fg">signext</span> %"x::Int64", <span class="ansi-cyan-fg">i64</span> <span class="ansi-bright-magenta-fg">signext</span> %"y::Int64"<span class="ansi-yellow-fg">)</span> #0 <span class="ansi-yellow-fg">{</span>
+<span class="ansi-bright-magenta-fg">define</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-bright-yellow-fg">@julia_add_11509</span><span class="ansi-yellow-fg">(</span><span class="ansi-cyan-fg">i64</span> <span class="ansi-bright-magenta-fg">signext</span> %"x::Int64", <span class="ansi-cyan-fg">i64</span> <span class="ansi-bright-magenta-fg">signext</span> %"y::Int64"<span class="ansi-yellow-fg">)</span> #0 <span class="ansi-yellow-fg">{</span>
 <span class="ansi-bright-red-fg">top:</span>
 <span class="ansi-bright-black-fg">; ┌ @ int.jl:87 within `+`</span>
    %0 = <span class="ansi-bright-cyan-fg ansi-bold">add</span> <span class="ansi-cyan-fg">i64</span> %"y::Int64", %"x::Int64"
@@ -583,7 +575,7 @@ Mosè Giordano
 <div class="ansi-escaped-output">
 <pre><span class="ansi-bright-black-fg">; Function Signature: add(Float64, Float64)</span>
 <span class="ansi-bright-black-fg">;  @ /home/runner/work/julia-hpc-tutorial-sc25/julia-hpc-tutorial-sc25/presentations/intro-julia/index.qmd:35 within `add`</span>
-<span class="ansi-bright-magenta-fg">define</span> <span class="ansi-cyan-fg">double</span> <span class="ansi-bright-yellow-fg">@julia_add_11692</span><span class="ansi-yellow-fg">(</span><span class="ansi-cyan-fg">double</span> %"x::Float64", <span class="ansi-cyan-fg">double</span> %"y::Float64"<span class="ansi-yellow-fg">)</span> #0 <span class="ansi-yellow-fg">{</span>
+<span class="ansi-bright-magenta-fg">define</span> <span class="ansi-cyan-fg">double</span> <span class="ansi-bright-yellow-fg">@julia_add_11567</span><span class="ansi-yellow-fg">(</span><span class="ansi-cyan-fg">double</span> %"x::Float64", <span class="ansi-cyan-fg">double</span> %"y::Float64"<span class="ansi-yellow-fg">)</span> #0 <span class="ansi-yellow-fg">{</span>
 <span class="ansi-bright-red-fg">top:</span>
 <span class="ansi-bright-black-fg">; ┌ @ float.jl:495 within `+`</span>
    %0 = <span class="ansi-bright-cyan-fg ansi-bold">fadd</span> <span class="ansi-cyan-fg">double</span> %"x::Float64", %"y::Float64"
@@ -602,7 +594,7 @@ Mosè Giordano
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
 <pre><span class="ansi-bright-black-fg">; Function Signature: axpy!(Array{Float32, 1}, Float32, Array{Float32, 1})</span>
-<span class="ansi-bright-magenta-fg">define</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@"julia_axpy!_11707"</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-magenta-fg">noundef</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">24</span><span class="ansi-yellow-fg">)</span> %"y::Array", <span class="ansi-cyan-fg">float</span> %"a::Float32", <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-magenta-fg">noundef</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">24</span><span class="ansi-yellow-fg">)</span> %"x::Array"<span class="ansi-yellow-fg">)</span> #0 <span class="ansi-yellow-fg">{</span>
+<span class="ansi-bright-magenta-fg">define</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@"julia_axpy!_11582"</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-magenta-fg">noundef</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">24</span><span class="ansi-yellow-fg">)</span> %"y::Array", <span class="ansi-cyan-fg">float</span> %"a::Float32", <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-magenta-fg">noundef</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">24</span><span class="ansi-yellow-fg">)</span> %"x::Array"<span class="ansi-yellow-fg">)</span> #0 <span class="ansi-yellow-fg">{</span>
 <span class="ansi-bright-red-fg">top:</span>
   %jlcallframe1 = <span class="ansi-bright-cyan-fg ansi-bold">alloca</span> <span class="ansi-yellow-fg">[</span><span class="ansi-yellow-fg">3</span> x <span class="ansi-bright-magenta-fg">ptr</span><span class="ansi-yellow-fg">]</span>, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %gcframe2 = <span class="ansi-bright-cyan-fg ansi-bold">alloca</span> <span class="ansi-yellow-fg">[</span><span class="ansi-yellow-fg">4</span> x <span class="ansi-bright-magenta-fg">ptr</span><span class="ansi-yellow-fg">]</span>, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">16</span>
@@ -625,25 +617,25 @@ Mosè Giordano
 <span class="ansi-bright-red-fg">L11:</span>                                              <span class="ansi-bright-black-fg">; preds = %top</span>
   %ptls_field = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-cyan-fg">i8</span>, <span class="ansi-bright-magenta-fg">ptr</span> %tls_pgcstack, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">16</span>
   %ptls_load = <span class="ansi-bright-cyan-fg ansi-bold">load</span> <span class="ansi-bright-magenta-fg">ptr</span>, <span class="ansi-bright-magenta-fg">ptr</span> %ptls_field, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
-  %"box::OneTo" = <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-bright-magenta-fg">noalias</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">)</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@ijl_gc_small_alloc</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> %ptls_load, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">360</span>, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">16</span>, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140051487496864</span><span class="ansi-yellow-fg">)</span> #9
+  %"box::OneTo" = <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-bright-magenta-fg">noalias</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">)</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@ijl_gc_small_alloc</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> %ptls_load, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">360</span>, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">16</span>, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140182744046240</span><span class="ansi-yellow-fg">)</span> #9
   %"box::OneTo.tag_addr" = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-cyan-fg">i64</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo", <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">-1</span>
-  <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">atomic</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140051487496864</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo.tag_addr" <span class="ansi-bright-magenta-fg">unordered</span>, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
+  <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">atomic</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140182744046240</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo.tag_addr" <span class="ansi-bright-magenta-fg">unordered</span>, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-cyan-fg">i64</span> %"x::Array.size.0.copyload", <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo", <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %gc_slot_addr_1 = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-bright-magenta-fg">ptr</span>, <span class="ansi-bright-magenta-fg">ptr</span> %gcframe2, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">3</span>
   <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo", <span class="ansi-bright-magenta-fg">ptr</span> %gc_slot_addr_1, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %ptls_load91 = <span class="ansi-bright-cyan-fg ansi-bold">load</span> <span class="ansi-bright-magenta-fg">ptr</span>, <span class="ansi-bright-magenta-fg">ptr</span> %ptls_field, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
-  %"box::OneTo50" = <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-bright-magenta-fg">noalias</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">)</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@ijl_gc_small_alloc</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> %ptls_load91, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">360</span>, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">16</span>, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140051487496864</span><span class="ansi-yellow-fg">)</span> #9
+  %"box::OneTo50" = <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-bright-magenta-fg">noalias</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">)</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@ijl_gc_small_alloc</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> %ptls_load91, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">360</span>, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">16</span>, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140182744046240</span><span class="ansi-yellow-fg">)</span> #9
   %"box::OneTo50.tag_addr" = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-cyan-fg">i64</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo50", <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">-1</span>
-  <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">atomic</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140051487496864</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo50.tag_addr" <span class="ansi-bright-magenta-fg">unordered</span>, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
+  <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">atomic</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140182744046240</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo50.tag_addr" <span class="ansi-bright-magenta-fg">unordered</span>, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-cyan-fg">i64</span> %"y::Array.size.0.copyload", <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo50", <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %gc_slot_addr_0 = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-bright-magenta-fg">ptr</span>, <span class="ansi-bright-magenta-fg">ptr</span> %gcframe2, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">2</span>
   <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo50", <span class="ansi-bright-magenta-fg">ptr</span> %gc_slot_addr_0, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
-  <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@"jl_global#11712.jit"</span>, <span class="ansi-bright-magenta-fg">ptr</span> %jlcallframe1, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
+  <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@"jl_global#11587.jit"</span>, <span class="ansi-bright-magenta-fg">ptr</span> %jlcallframe1, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %0 = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-bright-magenta-fg">ptr</span>, <span class="ansi-bright-magenta-fg">ptr</span> %jlcallframe1, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">1</span>
   <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo", <span class="ansi-bright-magenta-fg">ptr</span> %0, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %1 = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-bright-magenta-fg">ptr</span>, <span class="ansi-bright-magenta-fg">ptr</span> %jlcallframe1, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">2</span>
   <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo50", <span class="ansi-bright-magenta-fg">ptr</span> %1, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
-  %2 = <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@j1_throw_eachindex_mismatch_indices_11710</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-yellow-fg">@"jl_global#11711.jit"</span>, <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-magenta-fg">nonnull</span> %jlcallframe1, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">3</span><span class="ansi-yellow-fg">)</span>
+  %2 = <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@j1_throw_eachindex_mismatch_indices_11585</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-yellow-fg">@"jl_global#11586.jit"</span>, <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-magenta-fg">nonnull</span> %jlcallframe1, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">3</span><span class="ansi-yellow-fg">)</span>
   <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-cyan-fg">void</span> <span class="ansi-bright-yellow-fg">@llvm.trap</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">)</span>
   <span class="ansi-bright-cyan-fg ansi-bold">unreachable</span>
 
@@ -761,10 +753,10 @@ Mosè Giordano
 <pre>   .text
     .file   "add"
     .section    .ltext,"axl",@progbits
-    .globl  julia_add_11765                 <span class="ansi-bright-black-fg"># -- Begin function julia_add_11765</span>
+    .globl  julia_add_11640                 <span class="ansi-bright-black-fg"># -- Begin function julia_add_11640</span>
     .p2align    <span class="ansi-yellow-fg">4</span>, <span class="ansi-yellow-fg">0x90</span>
-    .type   julia_add_11765,@function
-<span class="ansi-bright-red-fg">julia_add_11765:</span>                        <span class="ansi-bright-black-fg"># @julia_add_11765</span>
+    .type   julia_add_11640,@function
+<span class="ansi-bright-red-fg">julia_add_11640:</span>                        <span class="ansi-bright-black-fg"># @julia_add_11640</span>
 <span class="ansi-bright-black-fg">; Function Signature: add(Int64, Int64)</span>
 <span class="ansi-bright-black-fg">; ┌ @ /home/runner/work/julia-hpc-tutorial-sc25/julia-hpc-tutorial-sc25/presentations/intro-julia/index.qmd:35 within `add`</span>
 <span class="ansi-bright-black-fg"># %bb.0:                                # %top</span>
@@ -777,7 +769,7 @@ Mosè Giordano
     <span class="ansi-bright-cyan-fg ansi-bold">pop</span>  rbp
     <span class="ansi-bright-cyan-fg ansi-bold">ret</span>
 <span class="ansi-bright-red-fg">.Lfunc_end0:</span>
-    .size   julia_add_11765, .Lfunc_end0-julia_add_11765
+    .size   julia_add_11640, .Lfunc_end0-julia_add_11640
 <span class="ansi-bright-black-fg">; └└</span>
                                         <span class="ansi-bright-black-fg"># -- End function</span>
     .section    ".note.GNU-stack","",@progbits
@@ -792,10 +784,10 @@ Mosè Giordano
 <pre>   .text
     .file   "add"
     .section    .ltext,"axl",@progbits
-    .globl  julia_add_11819                 <span class="ansi-bright-black-fg"># -- Begin function julia_add_11819</span>
+    .globl  julia_add_11694                 <span class="ansi-bright-black-fg"># -- Begin function julia_add_11694</span>
     .p2align    <span class="ansi-yellow-fg">4</span>, <span class="ansi-yellow-fg">0x90</span>
-    .type   julia_add_11819,@function
-<span class="ansi-bright-red-fg">julia_add_11819:</span>                        <span class="ansi-bright-black-fg"># @julia_add_11819</span>
+    .type   julia_add_11694,@function
+<span class="ansi-bright-red-fg">julia_add_11694:</span>                        <span class="ansi-bright-black-fg"># @julia_add_11694</span>
 <span class="ansi-bright-black-fg">; Function Signature: add(Float64, Float64)</span>
 <span class="ansi-bright-black-fg">; ┌ @ /home/runner/work/julia-hpc-tutorial-sc25/julia-hpc-tutorial-sc25/presentations/intro-julia/index.qmd:35 within `add`</span>
 <span class="ansi-bright-black-fg"># %bb.0:                                # %top</span>
@@ -808,18 +800,18 @@ Mosè Giordano
     <span class="ansi-bright-cyan-fg ansi-bold">pop</span>  rbp
     <span class="ansi-bright-cyan-fg ansi-bold">ret</span>
 <span class="ansi-bright-red-fg">.Lfunc_end0:</span>
-    .size   julia_add_11819, .Lfunc_end0-julia_add_11819
+    .size   julia_add_11694, .Lfunc_end0-julia_add_11694
 <span class="ansi-bright-black-fg">; └└</span>
                                         <span class="ansi-bright-black-fg"># -- End function</span>
-    .type   ".L+Core.Float64#11821",@object <span class="ansi-bright-black-fg"># @"+Core.Float64#11821"</span>
+    .type   ".L+Core.Float64#11696",@object <span class="ansi-bright-black-fg"># @"+Core.Float64#11696"</span>
     .section    .lrodata,"al",@progbits
     .p2align    <span class="ansi-yellow-fg">3</span>, <span class="ansi-yellow-fg">0x0</span>
-<span class="ansi-bright-red-fg">".L+Core.Float64#11821":</span>
-    .quad   ".L+Core.Float64#11821.jit"
-    .size   ".L+Core.Float64#11821", <span class="ansi-yellow-fg">8</span>
+<span class="ansi-bright-red-fg">".L+Core.Float64#11696":</span>
+    .quad   ".L+Core.Float64#11696.jit"
+    .size   ".L+Core.Float64#11696", <span class="ansi-yellow-fg">8</span>
 
-.set ".L+Core.Float64#11821.jit", <span class="ansi-yellow-fg">140051515868864</span>
-    .size   ".L+Core.Float64#11821.jit", <span class="ansi-yellow-fg">8</span>
+.set ".L+Core.Float64#11696.jit", <span class="ansi-yellow-fg">140182772418240</span>
+    .size   ".L+Core.Float64#11696.jit", <span class="ansi-yellow-fg">8</span>
     .section    ".note.GNU-stack","",@progbits
 </pre>
 </div>
@@ -835,10 +827,10 @@ Mosè Giordano
 <pre>   .text
     .file   "axpy!"
     .section    .ltext,"axl",@progbits
-    .globl  "julia_axpy!_11829"             <span class="ansi-bright-black-fg"># -- Begin function julia_axpy!_11829</span>
+    .globl  "julia_axpy!_11704"             <span class="ansi-bright-black-fg"># -- Begin function julia_axpy!_11704</span>
     .p2align    <span class="ansi-yellow-fg">4</span>, <span class="ansi-yellow-fg">0x90</span>
-    .type   "julia_axpy!_11829",@function
-<span class="ansi-bright-red-fg">"julia_axpy!_11829":</span>                    <span class="ansi-bright-black-fg"># @"julia_axpy!_11829"</span>
+    .type   "julia_axpy!_11704",@function
+<span class="ansi-bright-red-fg">"julia_axpy!_11704":</span>                    <span class="ansi-bright-black-fg"># @"julia_axpy!_11704"</span>
 <span class="ansi-bright-black-fg">; Function Signature: axpy!(Array{Float32, 1}, Float32, Array{Float32, 1})</span>
 <span class="ansi-bright-black-fg"># %bb.0:                                # %top</span>
     <span class="ansi-bright-red-fg">#DEBUG_VALUE:</span> <span class="ansi-bright-cyan-fg ansi-bold">axpy</span>!:y &lt;- <span class="ansi-yellow-fg">[</span><span class="ansi-bright-yellow-fg">$rdi+0</span><span class="ansi-yellow-fg">]</span>
@@ -946,7 +938,7 @@ Mosè Giordano
     <span class="ansi-bright-cyan-fg ansi-bold">jmp</span>  .LBB0_10
 <span class="ansi-bright-red-fg">.LBB0_13:</span>                               <span class="ansi-bright-black-fg"># %L11</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  rdi, <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>r15 + <span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">]</span>
-    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rbx, <span class="ansi-yellow-fg">140051487496864</span>
+    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rbx, <span class="ansi-yellow-fg">140182744046240</span>
     <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   r14, <span class="ansi-bright-magenta-fg">offset</span> <span class="ansi-bright-yellow-fg">ijl_gc_small_alloc</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  esi, <span class="ansi-yellow-fg">360</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  edx, <span class="ansi-yellow-fg">16</span>
@@ -963,28 +955,28 @@ Mosè Giordano
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  rcx, rbx
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  rdi, <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>r15 + <span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">]</span>
     <span class="ansi-bright-cyan-fg ansi-bold">call</span> r8
-    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rcx, <span class="ansi-bright-magenta-fg">offset</span> <span class="ansi-bright-yellow-fg">".Ljl_global#11834.jit"</span>
+    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rcx, <span class="ansi-bright-magenta-fg">offset</span> <span class="ansi-bright-yellow-fg">".Ljl_global#11709.jit"</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rax - <span class="ansi-yellow-fg">8</span><span class="ansi-yellow-fg">]</span>, rbx
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rax<span class="ansi-yellow-fg">]</span>, r13
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rbp - <span class="ansi-yellow-fg">64</span><span class="ansi-yellow-fg">]</span>, rax
-    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rdi, <span class="ansi-bright-magenta-fg">offset</span> <span class="ansi-bright-yellow-fg">".Ljl_global#11833.jit"</span>
+    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rdi, <span class="ansi-bright-magenta-fg">offset</span> <span class="ansi-bright-yellow-fg">".Ljl_global#11708.jit"</span>
     <span class="ansi-bright-cyan-fg ansi-bold">lea</span>  rsi, <span class="ansi-yellow-fg">[</span>rbp - <span class="ansi-yellow-fg">104</span><span class="ansi-yellow-fg">]</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  edx, <span class="ansi-yellow-fg">3</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rbp - <span class="ansi-yellow-fg">104</span><span class="ansi-yellow-fg">]</span>, rcx
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rbp - <span class="ansi-yellow-fg">96</span><span class="ansi-yellow-fg">]</span>, r14
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>rbp - <span class="ansi-yellow-fg">88</span><span class="ansi-yellow-fg">]</span>, rax
-    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rax, <span class="ansi-bright-magenta-fg">offset</span> <span class="ansi-bright-yellow-fg">j1_throw_eachindex_mismatch_indices_11832</span>
+    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rax, <span class="ansi-bright-magenta-fg">offset</span> <span class="ansi-bright-yellow-fg">j1_throw_eachindex_mismatch_indices_11707</span>
     <span class="ansi-bright-cyan-fg ansi-bold">call</span> rax
     <span class="ansi-bright-cyan-fg ansi-bold">ud2</span>
 <span class="ansi-bright-red-fg">.Lfunc_end0:</span>
-    .size   "julia_axpy!_11829", .Lfunc_end0-"julia_axpy!_11829"
+    .size   "julia_axpy!_11704", .Lfunc_end0-"julia_axpy!_11704"
                                         <span class="ansi-bright-black-fg"># -- End function</span>
-.set ".Ljl_global#11834.jit", <span class="ansi-yellow-fg">140051437109632</span>
-    .size   ".Ljl_global#11834.jit", <span class="ansi-yellow-fg">8</span>
-.set ".L+Main.Base.OneTo#11835.jit", <span class="ansi-yellow-fg">140051487496864</span>
-    .size   ".L+Main.Base.OneTo#11835.jit", <span class="ansi-yellow-fg">8</span>
-.set ".Ljl_global#11833.jit", <span class="ansi-yellow-fg">140051509441328</span>
-    .size   ".Ljl_global#11833.jit", <span class="ansi-yellow-fg">8</span>
+.set ".Ljl_global#11709.jit", <span class="ansi-yellow-fg">140182693659008</span>
+    .size   ".Ljl_global#11709.jit", <span class="ansi-yellow-fg">8</span>
+.set ".L+Main.Base.OneTo#11710.jit", <span class="ansi-yellow-fg">140182744046240</span>
+    .size   ".L+Main.Base.OneTo#11710.jit", <span class="ansi-yellow-fg">8</span>
+.set ".Ljl_global#11708.jit", <span class="ansi-yellow-fg">140182765990704</span>
+    .size   ".Ljl_global#11708.jit", <span class="ansi-yellow-fg">8</span>
     .section    ".note.GNU-stack","",@progbits
 </pre>
 </div>
@@ -1018,8 +1010,8 @@ Mosè Giordano
 <span id="cb36-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> <span class="fu">fetch</span>(t) <span class="co"># `fetch` waits for the task to finish</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  0.000130 seconds (74 allocations: 3.844 KiB)
-  1.969309 seconds (10 allocations: 544 bytes)</code></pre>
+<pre><code>  0.000127 seconds (74 allocations: 3.844 KiB)
+  1.966512 seconds (17.68 k allocations: 899.203 KiB, 0.26% gc time, 2.23% compilation time: 100% of which was recompilation)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>6</code></pre>
@@ -1048,8 +1040,8 @@ Mosè Giordano
 <span id="cb39-17"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">tmap</span>(svdvals, <span class="op">$</span>M) samples<span class="op">=</span><span class="fl">10</span> evals<span class="op">=</span><span class="fl">3</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>nthreads() = 4
-  16.511 ms (418 allocations: 4.31 MiB)
-  6.937 ms (587 allocations: 4.32 MiB)</code></pre>
+  16.576 ms (418 allocations: 4.31 MiB)
+  6.975 ms (587 allocations: 4.32 MiB)</code></pre>
 </div>
 </div>
 </section>
@@ -1071,8 +1063,8 @@ Mosè Giordano
 <span id="cb41-13"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">sum</span>(sin, <span class="op">$</span>v);</span>
 <span id="cb41-14"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">sum_threads</span>(sin, <span class="op">$</span>v);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  256.387 ms (0 allocations: 0 bytes)
-  77.299 ms (27 allocations: 1.75 KiB)</code></pre>
+<pre><code>  257.454 ms (0 allocations: 0 bytes)
+  77.111 ms (27 allocations: 1.75 KiB)</code></pre>
 </div>
 </div>
 </section></section>
