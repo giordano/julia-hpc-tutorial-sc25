@@ -7,7 +7,7 @@ on:
       - 'presentations/intro-julia'
   push:
     branches:
-      # - main
+      - main
     paths:
       - '.github/workflows/BuildPublish.yml'
       - 'presentations/intro-julia'
