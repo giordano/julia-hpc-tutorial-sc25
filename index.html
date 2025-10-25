@@ -377,7 +377,7 @@ Mosè Giordano
 <div id="22" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> <span class="fu">sleep</span>(<span class="fl">0.1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  0.101161 seconds (6 allocations: 224 bytes)</code></pre>
+<pre><code>  0.101147 seconds (6 allocations: 224 bytes)</code></pre>
 </div>
 </div>
 <p>This may not provide useful information for very quick functions (resolution is of the order of ~millisecond):</p>
@@ -387,10 +387,10 @@ Mosè Giordano
 <span id="cb24-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">norm</span>(A) <span class="co"># warm up</span></span>
 <span id="cb24-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> <span class="fu">norm</span>(A)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  0.000005 seconds (1 allocation: 16 bytes)</code></pre>
+<pre><code>  0.000004 seconds (1 allocation: 16 bytes)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>9.581326788695185</code></pre>
+<pre><code>11.141933409582435</code></pre>
 </div>
 </div>
 </section>
@@ -402,14 +402,14 @@ Mosè Giordano
 <span id="cb27-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">norm</span>(A) setup<span class="op">=</span>(A <span class="op">=</span> <span class="fu">randn</span>(<span class="fl">100</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <div class="ansi-escaped-output">
-<pre>BenchmarkTools.Trial: 10000 samples with 977 evaluations per sample.
- Range <span class="ansi-bright-black-fg">(</span><span class="ansi-cyan-fg ansi-bold">min</span> … <span class="ansi-magenta-fg">max</span><span class="ansi-bright-black-fg">):  </span><span class="ansi-cyan-fg ansi-bold">67.178 ns</span> … <span class="ansi-magenta-fg">120.564 ns</span>  <span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>min … max<span class="ansi-bright-black-fg">): </span>0.00% … 0.00%
- Time  <span class="ansi-bright-black-fg">(</span><span class="ansi-blue-fg ansi-bold">median</span><span class="ansi-bright-black-fg">):     </span><span class="ansi-blue-fg ansi-bold">69.763 ns               </span><span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>median<span class="ansi-bright-black-fg">):    </span>0.00%
- Time  <span class="ansi-bright-black-fg">(</span><span class="ansi-green-fg ansi-bold">mean</span> ± <span class="ansi-green-fg">σ</span><span class="ansi-bright-black-fg">):   </span><span class="ansi-green-fg ansi-bold">70.010 ns</span> ± <span class="ansi-green-fg">  2.381 ns</span>  <span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>mean ± σ<span class="ansi-bright-black-fg">):  </span>0.00% ± 0.00%
+<pre>BenchmarkTools.Trial: 10000 samples with 978 evaluations per sample.
+ Range <span class="ansi-bright-black-fg">(</span><span class="ansi-cyan-fg ansi-bold">min</span> … <span class="ansi-magenta-fg">max</span><span class="ansi-bright-black-fg">):  </span><span class="ansi-cyan-fg ansi-bold">66.996 ns</span> … <span class="ansi-magenta-fg">126.074 ns</span>  <span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>min … max<span class="ansi-bright-black-fg">): </span>0.00% … 0.00%
+ Time  <span class="ansi-bright-black-fg">(</span><span class="ansi-blue-fg ansi-bold">median</span><span class="ansi-bright-black-fg">):     </span><span class="ansi-blue-fg ansi-bold">69.772 ns               </span><span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>median<span class="ansi-bright-black-fg">):    </span>0.00%
+ Time  <span class="ansi-bright-black-fg">(</span><span class="ansi-green-fg ansi-bold">mean</span> ± <span class="ansi-green-fg">σ</span><span class="ansi-bright-black-fg">):   </span><span class="ansi-green-fg ansi-bold">70.130 ns</span> ± <span class="ansi-green-fg">  2.663 ns</span>  <span class="ansi-bright-black-fg">┊</span> GC <span class="ansi-bright-black-fg">(</span>mean ± σ<span class="ansi-bright-black-fg">):  </span>0.00% ± 0.00%
 
-       ▅▄▄▄▄▅▅▄█<span class="ansi-blue-fg">▆</span><span class="ansi-green-fg"> </span>  ▁                             ▁▁▁▂▂▁       ▂
-  ▄▁▅▄▆█████████<span class="ansi-blue-fg">█</span><span class="ansi-green-fg">▇</span>▄▆█▄▆▄▆▆▆▆▄▄▄▃▃▁▁▆▃▁▁▄▄▁▁▁▃▆▆██████████▆▅▅▅▅ █
-  67.2 ns<span class="ansi-bright-black-fg">       </span><span class="ansi-bright-black-fg">Histogram: </span><span class="ansi-bright-black-fg ansi-bold">log(</span><span class="ansi-bright-black-fg">frequency</span><span class="ansi-bright-black-fg ansi-bold">)</span><span class="ansi-bright-black-fg"> by time</span>      78.4 ns <span class="ansi-bold">&lt;</span>
+        ▅▄▄▄▄▄▄█<span class="ansi-blue-fg">▄</span><span class="ansi-green-fg"> </span> ▁                              ▁▁▂▁         ▂
+  ▄▁▁▅▃▅████████<span class="ansi-blue-fg">█</span><span class="ansi-green-fg">▇</span>▅█▆▆▄▅▇▇▆▁▅▁▃▄▃▄▅▄▁▁▁▃▃▃▄▅▆▇█████████▇▇▆▆▅▅▆ █
+  67 ns<span class="ansi-bright-black-fg">         </span><span class="ansi-bright-black-fg">Histogram: </span><span class="ansi-bright-black-fg ansi-bold">log(</span><span class="ansi-bright-black-fg">frequency</span><span class="ansi-bright-black-fg ansi-bold">)</span><span class="ansi-bright-black-fg"> by time</span>      79.1 ns <span class="ansi-bold">&lt;</span>
 
  Memory estimate<span class="ansi-bright-black-fg">: </span><span class="ansi-yellow-fg">0 bytes</span>, allocs estimate<span class="ansi-bright-black-fg">: </span><span class="ansi-yellow-fg">0</span>.</pre>
 </div>
@@ -617,16 +617,16 @@ Mosè Giordano
 <span class="ansi-bright-red-fg">L11:</span>                                              <span class="ansi-bright-black-fg">; preds = %top</span>
   %ptls_field = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-cyan-fg">i8</span>, <span class="ansi-bright-magenta-fg">ptr</span> %tls_pgcstack, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">16</span>
   %ptls_load = <span class="ansi-bright-cyan-fg ansi-bold">load</span> <span class="ansi-bright-magenta-fg">ptr</span>, <span class="ansi-bright-magenta-fg">ptr</span> %ptls_field, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
-  %"box::OneTo" = <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-bright-magenta-fg">noalias</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">)</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@ijl_gc_small_alloc</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> %ptls_load, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">360</span>, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">16</span>, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140277331892896</span><span class="ansi-yellow-fg">)</span> #9
+  %"box::OneTo" = <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-bright-magenta-fg">noalias</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">)</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@ijl_gc_small_alloc</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> %ptls_load, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">360</span>, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">16</span>, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140069965503136</span><span class="ansi-yellow-fg">)</span> #9
   %"box::OneTo.tag_addr" = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-cyan-fg">i64</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo", <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">-1</span>
-  <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">atomic</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140277331892896</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo.tag_addr" <span class="ansi-bright-magenta-fg">unordered</span>, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
+  <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">atomic</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140069965503136</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo.tag_addr" <span class="ansi-bright-magenta-fg">unordered</span>, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-cyan-fg">i64</span> %"x::Array.size.0.copyload", <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo", <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %gc_slot_addr_1 = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-bright-magenta-fg">ptr</span>, <span class="ansi-bright-magenta-fg">ptr</span> %gcframe2, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">3</span>
   <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo", <span class="ansi-bright-magenta-fg">ptr</span> %gc_slot_addr_1, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %ptls_load91 = <span class="ansi-bright-cyan-fg ansi-bold">load</span> <span class="ansi-bright-magenta-fg">ptr</span>, <span class="ansi-bright-magenta-fg">ptr</span> %ptls_field, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
-  %"box::OneTo50" = <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-bright-magenta-fg">noalias</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">)</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@ijl_gc_small_alloc</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> %ptls_load91, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">360</span>, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">16</span>, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140277331892896</span><span class="ansi-yellow-fg">)</span> #9
+  %"box::OneTo50" = <span class="ansi-bright-cyan-fg ansi-bold">call</span> <span class="ansi-bright-magenta-fg">noalias</span> <span class="ansi-bright-magenta-fg">nonnull</span> <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span> <span class="ansi-bright-magenta-fg">dereferenceable</span><span class="ansi-yellow-fg">(</span><span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">)</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-bright-yellow-fg">@ijl_gc_small_alloc</span><span class="ansi-yellow-fg">(</span><span class="ansi-bright-magenta-fg">ptr</span> %ptls_load91, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">360</span>, <span class="ansi-cyan-fg">i32</span> <span class="ansi-yellow-fg">16</span>, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140069965503136</span><span class="ansi-yellow-fg">)</span> #9
   %"box::OneTo50.tag_addr" = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-cyan-fg">i64</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo50", <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">-1</span>
-  <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">atomic</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140277331892896</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo50.tag_addr" <span class="ansi-bright-magenta-fg">unordered</span>, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
+  <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">atomic</span> <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">140069965503136</span>, <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo50.tag_addr" <span class="ansi-bright-magenta-fg">unordered</span>, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-cyan-fg">i64</span> %"y::Array.size.0.copyload", <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo50", <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
   %gc_slot_addr_0 = <span class="ansi-bright-cyan-fg ansi-bold">getelementptr</span> <span class="ansi-bright-magenta-fg">inbounds</span> <span class="ansi-bright-magenta-fg">ptr</span>, <span class="ansi-bright-magenta-fg">ptr</span> %gcframe2, <span class="ansi-cyan-fg">i64</span> <span class="ansi-yellow-fg">2</span>
   <span class="ansi-bright-cyan-fg ansi-bold">store</span> <span class="ansi-bright-magenta-fg">ptr</span> %"box::OneTo50", <span class="ansi-bright-magenta-fg">ptr</span> %gc_slot_addr_0, <span class="ansi-bright-magenta-fg">align</span> <span class="ansi-yellow-fg">8</span>
@@ -810,7 +810,7 @@ Mosè Giordano
     .quad   ".L+Core.Float64#11696.jit"
     .size   ".L+Core.Float64#11696", <span class="ansi-yellow-fg">8</span>
 
-.set ".L+Core.Float64#11696.jit", <span class="ansi-yellow-fg">140277360264896</span>
+.set ".L+Core.Float64#11696.jit", <span class="ansi-yellow-fg">140069993875136</span>
     .size   ".L+Core.Float64#11696.jit", <span class="ansi-yellow-fg">8</span>
     .section    ".note.GNU-stack","",@progbits
 </pre>
@@ -938,7 +938,7 @@ Mosè Giordano
     <span class="ansi-bright-cyan-fg ansi-bold">jmp</span>  .LBB0_10
 <span class="ansi-bright-red-fg">.LBB0_13:</span>                               <span class="ansi-bright-black-fg"># %L11</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  rdi, <span class="ansi-bright-magenta-fg">qword</span> <span class="ansi-bright-magenta-fg">ptr</span> <span class="ansi-yellow-fg">[</span>r15 + <span class="ansi-yellow-fg">16</span><span class="ansi-yellow-fg">]</span>
-    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rbx, <span class="ansi-yellow-fg">140277331892896</span>
+    <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   rbx, <span class="ansi-yellow-fg">140069965503136</span>
     <span class="ansi-bright-cyan-fg ansi-bold">movabs</span>   r14, <span class="ansi-bright-magenta-fg">offset</span> <span class="ansi-bright-yellow-fg">ijl_gc_small_alloc</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  esi, <span class="ansi-yellow-fg">360</span>
     <span class="ansi-bright-cyan-fg ansi-bold">mov</span>  edx, <span class="ansi-yellow-fg">16</span>
@@ -971,11 +971,11 @@ Mosè Giordano
 <span class="ansi-bright-red-fg">.Lfunc_end0:</span>
     .size   "julia_axpy!_11704", .Lfunc_end0-"julia_axpy!_11704"
                                         <span class="ansi-bright-black-fg"># -- End function</span>
-.set ".Ljl_global#11709.jit", <span class="ansi-yellow-fg">140277281505664</span>
+.set ".Ljl_global#11709.jit", <span class="ansi-yellow-fg">140069915115904</span>
     .size   ".Ljl_global#11709.jit", <span class="ansi-yellow-fg">8</span>
-.set ".L+Main.Base.OneTo#11710.jit", <span class="ansi-yellow-fg">140277331892896</span>
+.set ".L+Main.Base.OneTo#11710.jit", <span class="ansi-yellow-fg">140069965503136</span>
     .size   ".L+Main.Base.OneTo#11710.jit", <span class="ansi-yellow-fg">8</span>
-.set ".Ljl_global#11708.jit", <span class="ansi-yellow-fg">140277353837360</span>
+.set ".Ljl_global#11708.jit", <span class="ansi-yellow-fg">140069987447600</span>
     .size   ".Ljl_global#11708.jit", <span class="ansi-yellow-fg">8</span>
     .section    ".note.GNU-stack","",@progbits
 </pre>
@@ -1010,8 +1010,8 @@ Mosè Giordano
 <span id="cb36-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> <span class="fu">fetch</span>(t) <span class="co"># `fetch` waits for the task to finish</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  0.000118 seconds (74 allocations: 3.844 KiB)
-  1.970164 seconds (17.68 k allocations: 899.203 KiB, 2.01% compilation time: 100% of which was recompilation)</code></pre>
+<pre><code>  0.000120 seconds (74 allocations: 3.844 KiB)
+  1.970656 seconds (17.68 k allocations: 899.203 KiB, 1.84% compilation time: 100% of which was recompilation)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>6</code></pre>
@@ -1040,8 +1040,8 @@ Mosè Giordano
 <span id="cb39-17"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">tmap</span>(svdvals, <span class="op">$</span>M) samples<span class="op">=</span><span class="fl">10</span> evals<span class="op">=</span><span class="fl">3</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>nthreads() = 4
-  16.425 ms (418 allocations: 4.31 MiB)
-  6.922 ms (587 allocations: 4.32 MiB)</code></pre>
+  16.435 ms (418 allocations: 4.31 MiB)
+  7.112 ms (587 allocations: 4.32 MiB)</code></pre>
 </div>
 </div>
 </section>
@@ -1063,8 +1063,8 @@ Mosè Giordano
 <span id="cb41-13"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">sum</span>(sin, <span class="op">$</span>v);</span>
 <span id="cb41-14"><a href="" aria-hidden="true" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">sum_threads</span>(sin, <span class="op">$</span>v);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  256.792 ms (0 allocations: 0 bytes)
-  77.602 ms (27 allocations: 1.75 KiB)</code></pre>
+<pre><code>  255.945 ms (0 allocations: 0 bytes)
+  77.627 ms (27 allocations: 1.75 KiB)</code></pre>
 </div>
 </div>
 </section></section>
