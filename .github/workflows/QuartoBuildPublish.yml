@@ -1,16 +1,16 @@
-name: Build and Publish
+name: Build and Publish Quarto Presentation
 
 on:
   pull_request:
     paths:
-      - '.github/workflows/BuildPublish.yml'
-      - 'presentations/intro-julia'
+      - '.github/workflows/QuartoBuildPublish.yml'
+      - 'presentations/intro-julia/**'
   push:
     branches:
       - main
     paths:
-      - '.github/workflows/BuildPublish.yml'
-      - 'presentations/intro-julia'
+      - '.github/workflows/QuartoBuildPublish.yml'
+      - 'presentations/intro-julia/**'
   workflow_dispatch:
 
 concurrency:
@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 
 jobs:
-  build-publish:
+  build-publish-quarto:
     timeout-minutes: 20
 
     permissions:
