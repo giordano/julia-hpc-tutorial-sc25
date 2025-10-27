@@ -26,6 +26,17 @@ julia:
     exeflags: ["--threads=auto"]
 ---
 
+## Follow along
+
+<https://juliaparallel.org/julia-hpc-tutorial-sc25/>
+
+::: {layout="[22,78]"}
+
+{{< qrcode https://juliaparallel.org/julia-hpc-tutorial-sc25/
+colorDark="#000000" colorLight="#ffffff" height=550 width=550 >}}
+
+:::
+
 # Introduction
 
 ## Defining and calling functions
